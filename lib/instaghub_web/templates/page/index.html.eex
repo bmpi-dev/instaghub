@@ -1,6 +1,9 @@
 <h1>Instaghub - Instagram viewer</h1>
 
 <div class="grid">
+    <div>
+        page_cursor: <%= raw @page_info.end_cursor %>
+    </div>
     <%= for post <- @posts do %>
     <div class="grid-item">
         <div class="grid-media">

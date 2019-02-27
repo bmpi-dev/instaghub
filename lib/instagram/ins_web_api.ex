@@ -9,7 +9,8 @@ defmodule Ins.Web.API do
   @post_hash "477b65a610463740ccdb83135b2014db"
 
   def get_feeds(cursor \\ nil) do
-    variables = %{fetch_media_item_count: 12,
+    variables = %{cached_feed_item_ids: [],
+                  fetch_media_item_count: 12,
                   fetch_comment_count: 4,
                   fetch_like: 3,
                   has_stories: false,
@@ -23,8 +24,9 @@ defmodule Ins.Web.API do
     end
     params = [["query_hash", @feed_hash], ["variables", Poison.encode!(variables)]]
     res = get(@graphql_url_part, params)
-    res.data.user.edge_web_feed_timeline.edges
+    feeds = res.data.user.edge_web_feed_timeline.edges
     |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))
+    %{page_info: res.data.user.edge_web_feed_timeline.page_info, posts: feeds}
   end
 
   def get_user_posts(id, cursor \\ nil) do
@@ -90,7 +92,7 @@ defmodule Ins.Web.API do
     Ins.Web.Parser.parse_search_result(res)
   end
 
-  defp get(url_part, params \\ []) do
+  defp get(url_part, params) do
     session = System.get_env("INSTAGRAM_SESSION_ID")
     headers = ["Cookie": "sessionid=#{session}"]
     [url_part, params]

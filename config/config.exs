@@ -28,3 +28,8 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
+
+config :instaghub,
+  redis_uri: "redis://localhost:6379",
+  redis_name: :redis_ins,
+  redis_ttl: 60

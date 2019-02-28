@@ -11,9 +11,10 @@ defmodule Instaghub.Application do
       # Start the Ecto repository
       Instaghub.Repo,
       # Start the endpoint when the application starts
-      InstaghubWeb.Endpoint
+      InstaghubWeb.Endpoint,
       # Starts a worker by calling: Instaghub.Worker.start_link(arg)
       # {Instaghub.Worker, arg},
+      Instaghub.RedisUtil
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

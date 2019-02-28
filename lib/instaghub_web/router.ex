@@ -1,5 +1,6 @@
 defmodule InstaghubWeb.Router do
   use InstaghubWeb, :router
+  alias InstaghubWeb.Plug.Cache
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -7,6 +8,7 @@ defmodule InstaghubWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Cache, []
   end
 
   pipeline :api do

@@ -3,6 +3,7 @@ defmodule InstaghubWeb.PageController do
   alias Ins.Web.API
   alias Instaghub.RedisUtil
   alias Instaghub.Utils
+  require Logger
 
   def index(conn, params) do
     cursor = Map.get(params, "cursor")
@@ -18,10 +19,10 @@ defmodule InstaghubWeb.PageController do
       feeds_with_page = API.get_feeds(cursor)
       feeds_bin   = :erlang.term_to_binary(feeds_with_page)
       RedisUtil.setx(redis_key_md5, feeds_bin)
-      IO.puts "get page with api and store in redis with key #{redis_key_md5}"
+      Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
       feeds_with_page
     else
-      IO.puts "get page with redis key #{redis_key_md5}"
+      Logger.debug "get page with redis key #{redis_key_md5}"
       :erlang.binary_to_term value
     end
     render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)

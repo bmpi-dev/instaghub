@@ -15,3 +15,13 @@ import "phoenix_html"
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+
+console.log(document.querySelector('.posts'))
+
+
+document.body.onscroll = function(event) {
+    console.log(document.body.scrollHeight - document.body.clientHeight <= window.pageYOffset)
+    if (document.body.scrollHeight - document.body.clientHeight <= window.pageYOffset) {
+       console.log('scrolled');
+    }
+};

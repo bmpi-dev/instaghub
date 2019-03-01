@@ -1,14 +1,14 @@
 defmodule Instaghub.RedisUtil do
   use GenServer
+  require Instaghub.PoolMacro
 
   @redis_uri Application.get_env(:instaghub, :redis_uri)
-  @redis_name Application.get_env(:instaghub, :redis_name)
   @redis_ttl Application.get_env(:instaghub, :redis_ttl)
 
   # Client
 
   def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, opts, name: Instaghub.RedisUtil)
+    GenServer.start_link(__MODULE__, opts, [])
   end
 
   def get(key) do
@@ -41,14 +41,14 @@ defmodule Instaghub.RedisUtil do
   end
 
   defp command(cmd) do
-    GenServer.call(Instaghub.RedisUtil, {:cmd, cmd})
+    Instaghub.PoolMacro.pool :redis_pool, opt: {:cmd, cmd}
   end
 
   # Server (callbacks)
 
   @impl true
   def init(_config) do
-    res = Redix.start_link(@redis_uri, name: @redis_name)
+    res = Redix.start_link(@redis_uri)
     case res do
       {:ok, conn} -> {:ok, conn}
       {:error, {:already_started, conn}} -> {:ok, conn}

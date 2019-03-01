@@ -5,6 +5,23 @@ defmodule Instaghub.Application do
 
   use Application
 
+  defp poolboy_config_ins do
+    [
+      {:name, {:local, :ins_api_pool}},
+      {:worker_module, Instaghub.Ins},
+      {:size, 5}
+    ]
+  end
+
+  defp poolboy_config_redis do
+    [
+      {:name, {:local, :redis_pool}},
+      {:worker_module, Instaghub.RedisUtil},
+      {:size, 5},
+      {:max_overflow, 2}
+    ]
+  end
+
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
@@ -14,7 +31,8 @@ defmodule Instaghub.Application do
       InstaghubWeb.Endpoint,
       # Starts a worker by calling: Instaghub.Worker.start_link(arg)
       # {Instaghub.Worker, arg},
-      Instaghub.RedisUtil
+      :poolboy.child_spec(:ins_api_pool, poolboy_config_ins()),
+      :poolboy.child_spec(:redis_pool, poolboy_config_redis())
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

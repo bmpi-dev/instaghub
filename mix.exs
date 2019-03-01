@@ -47,6 +47,7 @@ defmodule Instaghub.MixProject do
       {:poison, "~> 3.1"},
       {:timex, "~> 3.1"},
       {:redix, "~> 0.9.2"},
+      {:poolboy, "~> 1.5.1"},
       {:credo, "~> 1.0.0", only: [:dev, :test]},
       {:dogma, "~> 0.1.16", only: [:dev]}
     ]

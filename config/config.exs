@@ -31,5 +31,4 @@ import_config "#{Mix.env()}.exs"
 
 config :instaghub,
   redis_uri: "redis://localhost:6379",
-  redis_name: :redis_ins,
   redis_ttl: 120

@@ -29,16 +29,16 @@ defmodule InstaghubWeb.Plug.Cache do
     Map.get(conn, @page_key)
   end
 
-  def get_cursor(conn) do
-    Map.get(conn.params, @page_cursor)
+  def get_cursor(%Plug.Conn{params: params}) do
+    Map.get(params, @page_cursor)
   end
 
-  def get_page_key(conn, cursor) do
+  def get_page_key(%Plug.Conn{request_path: path}, cursor) do
     redis_key = if cursor == nil do
-      conn.request_path
+      path
     else
-      Logger.debug "request_path #{conn.request_path}"
-      conn.request_path <> cursor
+      Logger.debug "request_path #{path}"
+      path <> cursor
     end
     Utils.md5_base64(redis_key)
   end

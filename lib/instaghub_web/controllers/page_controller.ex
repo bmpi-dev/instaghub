@@ -19,6 +19,13 @@ defmodule InstaghubWeb.PageController do
     else
       page
     end
-    render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+    if cursor == nil do
+      render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+    else
+      conn
+      |> put_layout(false)
+      |> put_view(InstaghubWeb.HtmlView)
+      |> render("posts.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+    end
   end
 end

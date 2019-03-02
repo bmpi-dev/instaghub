@@ -1,7 +1,6 @@
-<div class="grid">
   <div class="posts">
     <div class="page">
-        page_cursor: <%= raw @page_info.end_cursor %>
+        <%= raw @page_info.end_cursor %>
     </div>
     <%= for post <- @posts do %>
     <div class="grid-item">
@@ -30,4 +29,3 @@
     </div>
     <% end %>
   </div>
-</div>

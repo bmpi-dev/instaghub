@@ -10,18 +10,30 @@ import css from "../css/app.css"
 // Import dependencies
 //
 import "phoenix_html"
+// make $ available in Chrome console
+window.$ = window.jQuery = require("jquery")
 
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
 
-console.log(document.querySelector('.posts'))
-
-
-document.body.onscroll = function(event) {
-    console.log(document.body.scrollHeight - document.body.clientHeight <= window.pageYOffset)
-    if (document.body.scrollHeight - document.body.clientHeight <= window.pageYOffset) {
-       console.log('scrolled');
+$(window).scroll(function() {
+    var is_get_new_page = 0
+    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+        // bottom to get new page
+        if(is_get_new_page == 0) {
+            is_get_new_page = 1
+            var page_len = $(".page").length
+            var cursor = $(".page")[page_len - 1].textContent
+            $.ajax({
+                url: "/?cursor=" + cursor,
+                success: function(res) {
+                    var new_page = res
+                    $(".grid").append(res)
+                    is_get_new_page = 0
+                }
+            })
+        }
     }
-};
+});

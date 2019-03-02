@@ -32,6 +32,10 @@ body { font-family: sans-serif; }
     margin-bottom: 20px;
 }
 
+.page {
+    display: none;
+}
+
 .grid-media {
 }
 

@@ -33,3 +33,4 @@
     <% end %>
   </div>
 </div>
+<div id="load_next_page" style="display:none;">loading next page</div>

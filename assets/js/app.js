@@ -17,12 +17,12 @@ window.$ = window.jQuery = require("jquery")
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
-
+var is_get_new_page = 0
 $(window).scroll(function() {
-    var is_get_new_page = 0
     if($(window).scrollTop() + $(window).height() == $(document).height()) {
         // bottom to get new page
         if(is_get_new_page == 0) {
+            $("#load_next_page").show()
             is_get_new_page = 1
             var page_len = $(".page").length
             var cursor = $(".page")[page_len - 1].textContent
@@ -30,8 +30,21 @@ $(window).scroll(function() {
                 url: "/?cursor=" + cursor,
                 success: function(res) {
                     var new_page = res
-                    $(".grid").append(res)
+                    var pages = $(".page")
+                    var is_append = true
+                    for(var i=0; i<pages.length; i++) {
+                        var res_dom = $(res)
+                        if(pages[i].textContent === $('.page', res_dom)[0].textContent){
+                            is_append = false
+                            console.log("find page, break")
+                            break
+                        }
+                    }
+                    if(is_append) {
+                        $(".grid").append(res)
+                    }
                     is_get_new_page = 0
+                    $("#load_next_page").hide()
                 }
             })
         }

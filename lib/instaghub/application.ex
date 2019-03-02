@@ -31,6 +31,8 @@ defmodule Instaghub.Application do
       InstaghubWeb.Endpoint,
       # Starts a worker by calling: Instaghub.Worker.start_link(arg)
       # {Instaghub.Worker, arg},
+      Instaghub.Bucket,
+      Instaghub.Bucket.Schedule,
       :poolboy.child_spec(:ins_api_pool, poolboy_config_ins()),
       :poolboy.child_spec(:redis_pool, poolboy_config_redis())
     ]

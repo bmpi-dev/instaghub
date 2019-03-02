@@ -1,6 +1,7 @@
 defmodule InstaghubWeb.Router do
   use InstaghubWeb, :router
   alias InstaghubWeb.Plug.Cache
+  alias InstaghubWeb.Plug.QPS
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -9,6 +10,15 @@ defmodule InstaghubWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug Cache, []
+    plug QPS
+    plug :dec_qps
+  end
+
+  def dec_qps(conn, _opts) do
+    Plug.Conn.register_before_send(conn, fn conn ->
+      Instaghub.Bucket.decrease_req
+      conn
+    end)
   end
 
   pipeline :api do

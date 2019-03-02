@@ -14,7 +14,7 @@
             </a>
         </div>
         <div class="grid-caption">
-            <p><%= raw post.edge_media_to_caption %></p>
+            <p><%= Instaghub.Utils.parse_link(post.edge_media_to_caption) %></p>
         </div>
         <div class="grid-stats">
             <div class="grid-stats-likes">

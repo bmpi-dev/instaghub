@@ -1,11 +1,10 @@
-  <div class="posts">
-    <div class="page">
+    <div class="page" style="display:none;">
         <%= raw @page_info.end_cursor %>
     </div>
     <%= for post <- @posts do %>
     <div class="grid-item">
         <div class="grid-media">
-            <a class="" href="<%= "/p/" <> post.shortcode %>">
+            <a class="" href="<%= "/post/" <> post.shortcode %>">
                 <img class="" src="<%= post.display_url %>">
                 <div class="grid-media-shadow"></div>
             </a>
@@ -28,4 +27,3 @@
         </div>
     </div>
     <% end %>
-  </div>

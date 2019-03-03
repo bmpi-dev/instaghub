@@ -22,8 +22,17 @@ body { font-family: sans-serif; }
 /* ---- grid-item ---- */
 
 .grid-item {
-    width: 300px;
-    height: 450px;
+    display: inline-block;
+    vertical-align: top;
+    width: 30%;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-color: #e7e7e7;
+    border-style: solid;
+    border-width: 1px 0;
+    overflow: hidden;
+    text-align: left;
+    box-shadow: 0 0 1px #e7e7e7;
     float: left;
     border: 1px solid #333;
     border-color: hsla(0, 0%, 0%, 0.2);
@@ -37,6 +46,8 @@ body { font-family: sans-serif; }
 }
 
 .grid-media {
+    position: relative;
+    min-height: 300px;
 }
 
 .grid-caption {

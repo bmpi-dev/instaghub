@@ -23,12 +23,19 @@ Imagesloaded.makeJQueryPlugin( $ );
 var $grid = $('.grid').masonry({
     // options
     itemSelector: '.grid-item',
+    // columnWidth: '.grid-sizer',
+    gutter: 5,
+    percentPosition: false,
     //horizontalOrder: true,
-    //isFitWidth: true
+    isFitWidth: false,
+    initLayout: false
 });
-
-// init layout masonry
-$grid;
+// bind event
+$grid.masonry( 'on', 'layoutComplete', function() {
+    console.log('layout is complete');
+});
+// trigger initial layout
+$grid.masonry();
 
 // Import local files
 //
@@ -46,11 +53,24 @@ $(window).scroll(function() {
                 url: "/?cursor=" + cursor,
                 success: function(res) {
                     var $res = $(res);
+                    // store res in jquery data
+                    $('.grid').data("res", res);
                     var $page = $res.filter('.page')[0];
                     $(".page")[0].textContent = $page.textContent;
                     $grid.masonryImagesReveal($res);
-                }
-            });
+                },
+                timeout: 5000})
+                .done(function() {
+                    // console.log($('.grid').data("res"));
+                })
+                .fail(function() {
+                    console.log("error call ajax");
+                })
+                .always(function() {
+                    console.log("reset nex page");
+                    is_get_new_page = 0;
+                    $("#load_next_page").hide();
+                });
         }
     }
 });
@@ -62,11 +82,9 @@ $.fn.masonryImagesReveal = function($items) {
     $(".grid").append($items);
     $items.imagesLoaded().progress(function(imgLoad, image) {
         // image is imagesLoaded class, not <img>, <img> is image.img
-        var $item = $( image.img ).parents(".grid-item");
+        var $item = $(image.img).parents(".grid-item");
         $item.show();
         $grid.masonry('appended', $item);
-        is_get_new_page = 0;
-        $("#load_next_page").hide();
     });
     return this;
 };

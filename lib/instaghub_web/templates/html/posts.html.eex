@@ -1,21 +1,24 @@
-    <div class="page" style="display:none;">
-        <%= raw @page_info.end_cursor %>
-    </div>
-    <%= for post <- @posts do %>
+<div class="has-next-page" style="display:none">
+    <%= @page_info.has_next_page %>
+</div>
+<div class="page" style="display:none;">
+    <%= raw @page_info.end_cursor %>
+</div>
+<%= for post <- @posts do %>
     <div class="grid-item">
         <div class="grid-media">
             <a class="" href="<%= "/post/" <> post.shortcode %>">
                 <img class="" src="<%= post.display_url %>">
-            <%= if post.__typename == "GraphVideo" do %>
-                <div class="grid-media-type video">
-                    <i class="far fa-play-circle"></i>
-                    <div class="video-play-counts"><%= post.video_view_count %> views</div>
-                </div>
-                <div class="grid-media-shadow"></div>
-            <% end %>
-            <%= if post.__typename == "GraphSidecar" do %>
-                <i class="grid-media-type image fas fa-images"></i>
-            <% end %>
+                <%= if post.__typename == "GraphVideo" do %>
+                    <div class="grid-media-type video">
+                        <i class="far fa-play-circle"></i>
+                        <div class="video-play-counts"><%= post.video_view_count %> views</div>
+                    </div>
+                    <div class="grid-media-shadow"></div>
+                <% end %>
+                <%= if post.__typename == "GraphSidecar" do %>
+                    <i class="grid-media-type image fas fa-images"></i>
+                <% end %>
             </a>
         </div>
         <div class="grid-caption">
@@ -32,4 +35,4 @@
             </div>
         </div>
     </div>
-    <% end %>
+<% end %>

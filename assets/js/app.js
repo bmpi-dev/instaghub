@@ -49,28 +49,44 @@ $(window).scroll(function() {
             $("#load_next_page").show();
             is_get_new_page = 1;
             var cursor = $(".page")[0].textContent;
-            $.ajax({
-                url: "/?cursor=" + cursor,
-                success: function(res) {
-                    var $res = $(res);
-                    // store res in jquery data
-                    $('.grid').data("res", res);
-                    var $page = $res.filter('.page')[0];
-                    $(".page")[0].textContent = $page.textContent;
-                    $grid.masonryImagesReveal($res);
-                },
-                timeout: 5000})
-                .done(function() {
-                    // console.log($('.grid').data("res"));
-                })
-                .fail(function() {
-                    console.log("error call ajax");
-                })
-                .always(function() {
-                    console.log("reset nex page");
-                    is_get_new_page = 0;
-                    $("#load_next_page").hide();
-                });
+            var has_next_page = $(".has-next-page")[0].textContent.trim();
+            var url = "/?cursor=" + cursor;
+            var $id = $(".user-id");
+            if ($id.length > 0) {
+                $id = $id[0].textContent;
+            }
+            if ($id != undefined) {
+                url = url + "&id=" + $id;
+            }
+            if (has_next_page === "true") {
+                $.ajax({
+                    url: "/?cursor=" + cursor,
+                    success: function(res) {
+                        var $res = $(res);
+                        // store res in jquery data
+                        $('.grid').data("res", res);
+                        var $page = $res.filter('.page')[0];
+                        var $has_next_page = $res.filter('.has-next-page')[0];
+                        $(".page")[0].textContent = $page.textContent;
+                        $(".has-next-page")[0].textContent = $has_next_page.textContent;
+                        $grid.masonryImagesReveal($res);
+                    },
+                    timeout: 5000})
+                    .done(function() {
+                        // console.log($('.grid').data("res"));
+                    })
+                    .fail(function() {
+                        console.log("error call ajax");
+                    })
+                    .always(function() {
+                        console.log("reset nex page");
+                        is_get_new_page = 0;
+                        $("#load_next_page").hide();
+                    });
+            } else {
+                $("#load_next_page").hide();
+                is_get_new_page = 0;
+            }
         }
     }
 });

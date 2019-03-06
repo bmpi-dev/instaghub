@@ -49,6 +49,10 @@ body { font-family: sans-serif; }
     display: none;
 }
 
+.has-next-page {
+    display: none;
+}
+
 .next-page {
     text-align: center;
     font-size: x-large;
@@ -283,8 +287,8 @@ body { font-family: sans-serif; }
 }
 
 .post-comment-info .comments .comment-user img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
 }
 
 .post-comment-info .comments .comment-text {
@@ -298,4 +302,8 @@ body { font-family: sans-serif; }
         width: 60px;
         height: 60px;
     }
+}
+
+.user-profile p {
+    margin: 0;
 }

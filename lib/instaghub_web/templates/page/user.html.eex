@@ -1,4 +1,19 @@
 <div class="grid">
+    <div class="grid-item">
+        <div class="user-profile">
+            <div class="user-pic">
+                <img src="<%= @user.profile_pic_url %>">
+            </div>
+            <div class="user-info">
+                <p class="user-id" style="display:none;"><%= @user.id %></p>
+                <p><%= @user.full_name %></p>
+                <p><%= @user.biography %></p>
+                <p>following: <%= @user.edge_follow.count %></p>
+                <p>followers: <%= @user.edge_followed_by.count %></p>
+                <p>posts: <%= @user.edge_owner_to_timeline_media.count %></p>
+            </div>
+        </div>
+    </div>
     <%= for post <- @posts do %>
     <div class="grid-item">
         <div class="grid-media">

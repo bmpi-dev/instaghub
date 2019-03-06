@@ -43,7 +43,7 @@ $grid.masonry();
 // import socket from "./socket"
 var is_get_new_page = 0;
 $(window).scroll(function() {
-    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+    if($(window).scrollTop() + $(window).height() == $(document).height() && $("#load_next_page").length > 0) {
         // bottom to get new page
         if(is_get_new_page == 0) {
             $("#load_next_page").show();

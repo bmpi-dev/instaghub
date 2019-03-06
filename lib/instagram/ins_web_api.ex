@@ -73,7 +73,8 @@ defmodule Ins.Web.API do
                   has_threaded_comments: false
                  }
     params = [["query_hash", @post_hash], ["variables", Poison.encode!(variables)]]
-    get(@graphql_url_part, params)
+    res = get(@graphql_url_part, params)
+    Ins.Web.Parser.parse_media(res.data.shortcode_media)
   end
 
   def get_user_profile(user) do

@@ -4,17 +4,17 @@
         <div class="grid-media">
             <a class="" href="<%= "/post/" <> post.shortcode %>">
                 <img class="" src="<%= post.display_url %>">
-                <div class="grid-media-shadow"></div>
-            </a>
             <%= if post.__typename == "GraphVideo" do %>
                 <div class="grid-media-type video">
                     <i class="far fa-play-circle"></i>
                     <div class="video-play-counts"><%= post.video_view_count %> views</div>
                 </div>
-            <%= end %>
+                <div class="grid-media-shadow"></div>
+            <% end %>
             <%= if post.__typename == "GraphSidecar" do %>
                 <i class="grid-media-type image fas fa-images"></i>
-            <%= end %>
+            <% end %>
+            </a>
         </div>
         <div class="grid-caption">
             <p><%= Instaghub.Utils.parse_link(post.edge_media_to_caption) %></p>

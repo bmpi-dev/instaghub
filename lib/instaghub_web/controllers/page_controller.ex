@@ -28,4 +28,20 @@ defmodule InstaghubWeb.PageController do
       |> render("posts.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
     end
   end
+
+  def post_comment(conn, %{"shortcode" => shortcode} = _params) do
+    redis_key_md5 = Cache.get_page_key(conn, nil)
+    page = Cache.get_page(conn)
+    feeds_with_page =
+    if page == nil do
+      feeds_with_page = API.get_post_comment(shortcode)
+      feeds_bin   = :erlang.term_to_binary(feeds_with_page)
+      RedisUtil.setx(redis_key_md5, feeds_bin)
+      Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      feeds_with_page
+    else
+      page
+    end
+    render(conn, "post_comment.html", post: feeds_with_page)
+  end
 end

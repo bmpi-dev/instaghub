@@ -248,7 +248,7 @@ body { font-family: sans-serif; }
 }
 
 .post-comment-info .owner {
-    height: 130px;
+    height: auto;
     margin-top: 20px;
     border: 1px solid #ddd;
     border-left: none;
@@ -297,9 +297,5 @@ body { font-family: sans-serif; }
     .post-comment-info .owner img {
         width: 60px;
         height: 60px;
-    }
-
-    .post-comment-info .owner {
-        height: 150px;
     }
 }

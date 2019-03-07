@@ -61,7 +61,7 @@ $(window).scroll(function() {
             } else {
                 url = window.location.origin + url;
             }
-            console.log("request path is " + url);
+            // console.log("request path is " + url);
             if (has_next_page === "true") {
                 $.ajax({
                     url: url,
@@ -111,16 +111,16 @@ $.fn.masonryImagesReveal = function($items, isAppend) {
     } else {
         $items.imagesLoaded()
             .always( function( instance ) {
-                console.log('all images loaded');
+                // console.log('all images loaded');
                 // trigger initial layout
                 $items.show();
                 $grid.masonry();
             })
             .done( function( instance ) {
-                console.log('all images successfully loaded');
+                // console.log('all images successfully loaded');
             })
             .fail( function() {
-                console.log('all images loaded, at least one is broken');
+                // console.log('all images loaded, at least one is broken');
             });
     }
     return this;

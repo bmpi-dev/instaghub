@@ -1,4 +1,5 @@
 defmodule Ins.Web.API do
+  require Logger
 
   @base_url "https://www.instagram.com"
   @graphql_url_part "/graphql/query/"
@@ -112,7 +113,9 @@ defmodule Ins.Web.API do
   end
 
   defp build_url([part, params]) do
-    "#{@base_url}#{part}?#{params_join(params)}"
+    url = "#{@base_url}#{part}?#{params_join(params)}"
+    Logger.debug url
+    url
   end
 
   defp params_join([h | t]) do

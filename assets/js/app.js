@@ -32,7 +32,7 @@ var $grid = $('.grid').masonry({
 });
 // bind event
 $grid.masonry( 'on', 'layoutComplete', function() {
-    console.log('layout is complete');
+    //console.log('layout is complete');
 });
 // trigger initial layout
 $grid.masonry();
@@ -50,17 +50,18 @@ $(window).scroll(function() {
             is_get_new_page = 1;
             var cursor = $(".page")[0].textContent;
             var has_next_page = $(".has-next-page")[0].textContent.trim();
-            var url = "/?cursor=" + cursor;
-            var $id = $(".user-id");
-            if ($id.length > 0) {
-                $id = $id[0].textContent;
+            var url = window.location.pathname + "/?cursor=" + cursor;
+            var $user_id = $(".user-id");
+            if ($user_id.length > 0) {
+                $user_id = $user_id[0].textContent;
             }
-            if ($id != undefined) {
-                url = url + "&id=" + $id;
+            if ($user_id !== undefined) {
+                url = url + "&id=" + $user_id;
             }
+            //console.log("request path is " + url);
             if (has_next_page === "true") {
                 $.ajax({
-                    url: "/?cursor=" + cursor,
+                    url: url,
                     success: function(res) {
                         var $res = $(res);
                         // store res in jquery data
@@ -76,10 +77,10 @@ $(window).scroll(function() {
                         // console.log($('.grid').data("res"));
                     })
                     .fail(function() {
-                        console.log("error call ajax");
+                        //console.log("error call ajax");
                     })
                     .always(function() {
-                        console.log("reset nex page");
+                        //console.log("reset nex page");
                         is_get_new_page = 0;
                         $("#load_next_page").hide();
                     });

@@ -1,0 +1,57 @@
+<div class="grid">
+    <div class="grid-item">
+        <div class="tag-profile">
+            <div class="tag-pic pure-g">
+                <div class="pure-u-1-3" style="position:relative;max-height:150px;max-width:150px;">
+                    <img src="<%= @tag.profile_pic_url %>" style="position:absolute;top:0;left:0;bottom:0;right:0;margin:auto;width:80%;border-radius:50%;">
+                </div>
+                <div class="pure-u-2-3" style="padding-top:15px;">
+                    <p style="font-weight:bold;">#<%= @tag.name %></p>
+                    <p style="font-weight:100;">posts: <%= @tag.edge_hashtag_to_media.count %></p>
+                </div>
+                <p class="tag-id" style="display:none;"><%= @tag.id %></p>
+            </div>
+        </div>
+    </div>
+    <%= for post <- @posts do %>
+    <div class="grid-item">
+        <div class="grid-media">
+            <a class="" href="<%= "/post/" <> post.shortcode %>">
+                <img class="" src="<%= post.display_url %>">
+            <%= if post.__typename == "GraphVideo" do %>
+                <div class="grid-media-type video">
+                    <i class="far fa-play-circle"></i>
+                    <div class="video-play-counts"><%= post.video_view_count %> views</div>
+                </div>
+                <div class="grid-media-shadow"></div>
+            <% end %>
+            <%= if post.__typename == "GraphSidecar" do %>
+                <i class="grid-media-type image fas fa-images"></i>
+            <% end %>
+            </a>
+        </div>
+        <div class="grid-caption">
+            <p><%= Instaghub.Utils.parse_link(post.edge_media_to_caption) %></p>
+        </div>
+        <div class="line"></div>
+        <p class="grid-stats-created"><%= post.taken_at_timestamp %></p>
+        <div class="grid-stats">
+            <div class="grid-stats-likes">
+                likes: <%= post.edge_media_preview_like %>
+            </div>
+            <div class="grid-stats-comments">
+                comments: <%= post.edge_media_to_comment.count %>
+            </div>
+        </div>
+    </div>
+    <% end %>
+</div>
+<div class="page">
+    <%= raw @page_info.end_cursor %>
+</div>
+<div class="has-next-page">
+    <%= @page_info.has_next_page %>
+</div>
+<div id="load_next_page" class="next-page" style="display:none;">
+    loading next page
+</div>

@@ -31,6 +31,7 @@ defmodule InstaghubWeb.Router do
     get "/", PageController, :index
     get "/post/:shortcode", PageController, :post_comment
     get "/user/:username", PageController, :user_posts
+    get "/tag/:tagname", PageController, :tag_posts
   end
 
   # Other scopes may use custom stacks.

@@ -24,10 +24,14 @@ defmodule Ins.Web.API do
       variables
     end
     params = [["query_hash", @feed_hash], ["variables", Poison.encode!(variables)]]
-    res = get(@graphql_url_part, params)
-    feeds = res.data.user.edge_web_feed_timeline.edges
-    |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))
-    %{page_info: res.data.user.edge_web_feed_timeline.page_info, posts: feeds}
+    try do
+      res = get(@graphql_url_part, params)
+      feeds = res.data.user.edge_web_feed_timeline.edges
+      |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))
+      %{page_info: res.data.user.edge_web_feed_timeline.page_info, posts: feeds}
+    rescue
+      _ -> nil
+    end
   end
 
   def get_user_posts(id, cursor \\ nil) do
@@ -41,11 +45,15 @@ defmodule Ins.Web.API do
       variables
     end
     params = [["query_hash", @user_hash], ["variables", Poison.encode!(variables)]]
-    res = get(@graphql_url_part, params)
-    user_posts = res.data.user.edge_owner_to_timeline_media
-    posts = user_posts.edges
-    |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))
-    %{count: user_posts.count, page_info: user_posts.page_info, posts: posts}
+    try do
+      res = get(@graphql_url_part, params)
+      user_posts = res.data.user.edge_owner_to_timeline_media
+      posts = user_posts.edges
+      |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))
+      %{count: user_posts.count, page_info: user_posts.page_info, posts: posts}
+    rescue
+      _ -> nil
+    end
   end
 
   def get_tag_posts(tag_name, cursor \\ nil) do
@@ -59,11 +67,15 @@ defmodule Ins.Web.API do
       variables
     end
     params = [["query_hash", @tag_hash], ["variables", Poison.encode!(variables)]]
-    res = get(@graphql_url_part, params)
-    tag_posts = Ins.Web.Parser.parse_tag(res.data.hashtag)
-    Map.update(tag_posts, :edge_hashtag_to_media, tag_posts.edge_hashtag_to_media, fn(s) ->
-      %{count: s.count, page_info: s.page_info, posts: s.edges |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))}
-    end)
+    try do
+      res = get(@graphql_url_part, params)
+      tag_posts = Ins.Web.Parser.parse_tag(res.data.hashtag)
+      Map.update(tag_posts, :edge_hashtag_to_media, tag_posts.edge_hashtag_to_media, fn(s) ->
+        %{count: s.count, page_info: s.page_info, posts: s.edges |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))}
+      end)
+    rescue
+      _ -> nil
+    end
   end
 
   def get_post_comment(shortcode) do
@@ -74,24 +86,36 @@ defmodule Ins.Web.API do
                   has_threaded_comments: false
                  }
     params = [["query_hash", @post_hash], ["variables", Poison.encode!(variables)]]
-    res = get(@graphql_url_part, params)
-    Ins.Web.Parser.parse_media(res.data.shortcode_media)
+    try do
+      res = get(@graphql_url_part, params)
+      Ins.Web.Parser.parse_media(res.data.shortcode_media)
+    rescue
+      _ -> nil
+    end
   end
 
   def get_user_profile(user) do
     url_part = "/" <> user <> "/"
     params = [["__a", 1]]
-    res = get(url_part, params)
-    user = Ins.Web.Parser.parse_user(res.graphql.user)
-    Map.update(user, :edge_owner_to_timeline_media, user.edge_owner_to_timeline_media, fn(s) ->
-      %{count: s.count, page_info: s.page_info, posts: s.edges |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))}
-    end)
+    try do
+      res = get(url_part, params)
+      user = Ins.Web.Parser.parse_user(res.graphql.user)
+      Map.update(user, :edge_owner_to_timeline_media, user.edge_owner_to_timeline_media, fn(s) ->
+        %{count: s.count, page_info: s.page_info, posts: s.edges |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))}
+      end)
+    rescue
+      _ -> nil
+    end
   end
 
   def search_tags_users(query_str) do
     params = [["query", query_str]]
-    res = get(@search_url_part, params)
-    Ins.Web.Parser.parse_search_result(res)
+    try do
+      res = get(@search_url_part, params)
+      Ins.Web.Parser.parse_search_result(res)
+    rescue
+      _ -> nil
+    end
   end
 
   defp get(url_part, params) do

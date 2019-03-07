@@ -40,6 +40,7 @@ defmodule InstaghubWeb.Router do
     get "/search/:item", PageController, :search
     get "/privacy", PageController, :privacy
     get "/about", PageController, :about
+    get "/*path", PageController, :not_found
   end
 
   # Other scopes may use custom stacks.

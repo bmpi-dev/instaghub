@@ -5,6 +5,18 @@ defmodule InstaghubWeb.PageController do
   alias InstaghubWeb.Plug.Cache
   require Logger
 
+  defp handle_404(conn) do
+    conn
+    |> Plug.Conn.put_status(404)
+    |> Phoenix.Controller.put_view(InstaghubWeb.ErrorView)
+    |> Phoenix.Controller.render("404.html", %{})
+    |> Plug.Conn.halt
+  end
+
+  def not_found(conn, _params) do
+    handle_404(conn)
+  end
+
   def index(%Plug.Conn{request_path: path} = conn, _params) do
     Logger.debug path
     cursor = Cache.get_cursor(conn)
@@ -13,20 +25,26 @@ defmodule InstaghubWeb.PageController do
     feeds_with_page =
     if page == nil do
       feeds_with_page = API.get_feeds(cursor)
-      feeds_bin   = :erlang.term_to_binary(feeds_with_page)
-      RedisUtil.setx(redis_key_md5, feeds_bin)
-      Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      if feeds_with_page != nil do
+        feeds_bin = :erlang.term_to_binary(feeds_with_page)
+        RedisUtil.setx(redis_key_md5, feeds_bin)
+        Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      end
       feeds_with_page
     else
       page
     end
-    if cursor == nil do
-      render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+    if feeds_with_page == nil do
+      handle_404(conn)
     else
-      conn
-      |> put_layout(false)
-      |> put_view(InstaghubWeb.HtmlView)
-      |> render("posts.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+      if cursor == nil do
+        render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+      else
+        conn
+        |> put_layout(false)
+        |> put_view(InstaghubWeb.HtmlView)
+        |> render("posts.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+      end
     end
   end
 
@@ -36,14 +54,20 @@ defmodule InstaghubWeb.PageController do
     feeds_with_page =
     if page == nil do
       feeds_with_page = API.get_post_comment(shortcode)
-      feeds_bin   = :erlang.term_to_binary(feeds_with_page)
-      RedisUtil.setx(redis_key_md5, feeds_bin)
-      Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      if feeds_with_page != nil do
+        feeds_bin = :erlang.term_to_binary(feeds_with_page)
+        RedisUtil.setx(redis_key_md5, feeds_bin)
+        Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      end
       feeds_with_page
     else
       page
     end
-    render(conn, "post_comment.html", post: feeds_with_page)
+    if feeds_with_page == nil do
+      handle_404(conn)
+    else
+      render(conn, "post_comment.html", post: feeds_with_page)
+    end
   end
 
   def user_posts(conn, %{"username" => username} = params) do
@@ -58,20 +82,26 @@ defmodule InstaghubWeb.PageController do
       else
         API.get_user_posts(id, cursor)
       end
-      feeds_bin   = :erlang.term_to_binary(feeds_with_page)
-      RedisUtil.setx(redis_key_md5, feeds_bin)
-      Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      if feeds_with_page != nil do
+        feeds_bin   = :erlang.term_to_binary(feeds_with_page)
+        RedisUtil.setx(redis_key_md5, feeds_bin)
+        Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      end
       feeds_with_page
     else
       page
     end
-    if cursor == nil do
-      render(conn, "user.html", posts: feeds_with_page.edge_owner_to_timeline_media.posts, page_info: feeds_with_page.edge_owner_to_timeline_media.page_info, user: feeds_with_page)
+    if feeds_with_page == nil do
+      handle_404(conn)
     else
-      conn
-      |> put_layout(false)
-      |> put_view(InstaghubWeb.HtmlView)
-      |> render("posts.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+      if cursor == nil do
+        render(conn, "user.html", posts: feeds_with_page.edge_owner_to_timeline_media.posts, page_info: feeds_with_page.edge_owner_to_timeline_media.page_info, user: feeds_with_page)
+      else
+        conn
+        |> put_layout(false)
+        |> put_view(InstaghubWeb.HtmlView)
+        |> render("posts.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+      end
     end
   end
 
@@ -82,20 +112,26 @@ defmodule InstaghubWeb.PageController do
     feeds_with_page =
     if page == nil do
       feeds_with_page = API.get_tag_posts(tagname, cursor)
-      feeds_bin   = :erlang.term_to_binary(feeds_with_page)
-      RedisUtil.setx(redis_key_md5, feeds_bin)
-      Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      if feeds_with_page != nil do
+        feeds_bin = :erlang.term_to_binary(feeds_with_page)
+        RedisUtil.setx(redis_key_md5, feeds_bin)
+        Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      end
       feeds_with_page
     else
       page
     end
-    if cursor == nil do
-      render(conn, "tag.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info, tag: feeds_with_page)
+    if feeds_with_page == nil do
+      handle_404(conn)
     else
-      conn
-      |> put_layout(false)
-      |> put_view(InstaghubWeb.HtmlView)
-      |> render("posts.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info)
+      if cursor == nil do
+        render(conn, "tag.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info, tag: feeds_with_page)
+      else
+        conn
+        |> put_layout(false)
+        |> put_view(InstaghubWeb.HtmlView)
+        |> render("posts.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info)
+      end
     end
   end
 
@@ -106,16 +142,22 @@ defmodule InstaghubWeb.PageController do
     feeds_with_page =
     if page == nil do
       feeds_with_page = API.search_tags_users(item)
-      feeds_bin   = :erlang.term_to_binary(feeds_with_page)
-      RedisUtil.setx(redis_key_md5, feeds_bin)
-      Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      if feeds_with_page != nil do
+        feeds_bin = :erlang.term_to_binary(feeds_with_page)
+        RedisUtil.setx(redis_key_md5, feeds_bin)
+        Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      end
       feeds_with_page
     else
       page
     end
-    tags = feeds_with_page.hashtags
-    users = feeds_with_page.users
-    render(conn, "search.html", items: tags ++ users |> Enum.shuffle)
+    if feeds_with_page == nil do
+      handle_404(conn)
+    else
+      tags = feeds_with_page.hashtags
+      users = feeds_with_page.users
+      render(conn, "search.html", items: tags ++ users |> Enum.shuffle)
+    end
   end
 
   def privacy(conn, _params) do

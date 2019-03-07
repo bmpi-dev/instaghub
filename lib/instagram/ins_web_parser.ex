@@ -2,7 +2,10 @@ defmodule Ins.Web.Parser do
   use Timex
 
   def parse_tag(object) do
-    struct(Ins.Web.Model.Tag, object)
+    case object do
+      nil -> nil
+      tag -> struct(Ins.Web.Model.Tag, tag)
+    end
   end
 
   def parse_media(object) do

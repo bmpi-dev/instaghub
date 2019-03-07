@@ -34,8 +34,6 @@ var $grid = $('.grid').masonry({
 $grid.masonry( 'on', 'layoutComplete', function() {
     //console.log('layout is complete');
 });
-// trigger initial layout
-$grid.masonry();
 
 // Import local files
 //
@@ -51,14 +49,19 @@ $(window).scroll(function() {
             var cursor = $(".page")[0].textContent;
             var has_next_page = $(".has-next-page")[0].textContent.trim();
             var url = window.location.pathname + "/?cursor=" + cursor;
+            url = url.replace("//", "/");
             var $user_id = $(".user-id");
             if ($user_id.length > 0) {
                 $user_id = $user_id[0].textContent;
+            } else {
+                $user_id = undefined;
             }
             if ($user_id !== undefined) {
-                url = url + "&id=" + $user_id;
+                url = window.location.origin + url + "&id=" + $user_id;
+            } else {
+                url = window.location.origin + url;
             }
-            //console.log("request path is " + url);
+            console.log("request path is " + url);
             if (has_next_page === "true") {
                 $.ajax({
                     url: url,
@@ -70,7 +73,7 @@ $(window).scroll(function() {
                         var $has_next_page = $res.filter('.has-next-page')[0];
                         $(".page")[0].textContent = $page.textContent;
                         $(".has-next-page")[0].textContent = $has_next_page.textContent;
-                        $grid.masonryImagesReveal($res);
+                        $grid.masonryImagesReveal($res, true);
                     },
                     timeout: 5000})
                     .done(function() {
@@ -92,16 +95,39 @@ $(window).scroll(function() {
     }
 });
 
-$.fn.masonryImagesReveal = function($items) {
+$.fn.masonryImagesReveal = function($items, isAppend) {
     // hide by default
     $items.hide();
     // append to container
-    $(".grid").append($items);
-    $items.imagesLoaded().progress(function(imgLoad, image) {
-        // image is imagesLoaded class, not <img>, <img> is image.img
-        var $item = $(image.img).parents(".grid-item");
-        $item.show();
-        $grid.masonry('appended', $item);
-    });
+    if (isAppend == true) {
+        $(".grid").append($items);
+        $items.imagesLoaded()
+            .progress(function(imgLoad, image) {
+                // image is imagesLoaded class, not <img>, <img> is image.img
+                var $item = $(image.img).parents(".grid-item");
+                $item.show();
+                $grid.masonry('appended', $item);
+            });
+    } else {
+        $items.imagesLoaded()
+            .always( function( instance ) {
+                console.log('all images loaded');
+                // trigger initial layout
+                $items.show();
+                $grid.masonry();
+            })
+            .done( function( instance ) {
+                console.log('all images successfully loaded');
+            })
+            .fail( function() {
+                console.log('all images loaded, at least one is broken');
+            });
+    }
     return this;
 };
+
+// first load to layout
+$(document).ready(function() {
+    var $items = $('.grid-item');
+    $grid.masonryImagesReveal($items, false);
+});

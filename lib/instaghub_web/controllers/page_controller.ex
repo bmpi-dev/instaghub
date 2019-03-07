@@ -5,7 +5,8 @@ defmodule InstaghubWeb.PageController do
   alias InstaghubWeb.Plug.Cache
   require Logger
 
-  def index(conn, _params) do
+  def index(%Plug.Conn{request_path: path} = conn, _params) do
+    Logger.debug path
     cursor = Cache.get_cursor(conn)
     redis_key_md5 = Cache.get_page_key(conn, cursor)
     page = Cache.get_page(conn)
@@ -75,7 +76,6 @@ defmodule InstaghubWeb.PageController do
   end
 
   def tag_posts(conn, %{"tagname" => tagname} = _params) do
-    IO.puts "tag_posts"
     cursor = Cache.get_cursor(conn)
     redis_key_md5 = Cache.get_page_key(conn, cursor)
     page = Cache.get_page(conn)
@@ -97,5 +97,32 @@ defmodule InstaghubWeb.PageController do
       |> put_view(InstaghubWeb.HtmlView)
       |> render("posts.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info)
     end
+  end
+
+  def search(conn, %{"item" => item} = _params) do
+    cursor = Cache.get_cursor(conn)
+    redis_key_md5 = Cache.get_page_key(conn, cursor)
+    page = Cache.get_page(conn)
+    feeds_with_page =
+    if page == nil do
+      feeds_with_page = API.search_tags_users(item)
+      feeds_bin   = :erlang.term_to_binary(feeds_with_page)
+      RedisUtil.setx(redis_key_md5, feeds_bin)
+      Logger.debug "get page with api and store in redis with key #{redis_key_md5}"
+      feeds_with_page
+    else
+      page
+    end
+    tags = feeds_with_page.hashtags
+    users = feeds_with_page.users
+    render(conn, "search.html", items: tags ++ users |> Enum.shuffle)
+  end
+
+  def privacy(conn, _params) do
+    render(conn, "privacy.html", [])
+  end
+
+  def about(conn, _params) do
+    render(conn, "about.html", [])
   end
 end

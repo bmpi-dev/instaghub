@@ -29,9 +29,17 @@ defmodule InstaghubWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/explore/women", PageController, :index
+    get "/explore/animal", PageController, :index
+    get "/explore/game", PageController, :index
+    get "/explore/food", PageController, :index
+    get "/explore/hot", PageController, :index
     get "/post/:shortcode", PageController, :post_comment
     get "/user/:username", PageController, :user_posts
     get "/tag/:tagname", PageController, :tag_posts
+    get "/search/:item", PageController, :search
+    get "/privacy", PageController, :privacy
+    get "/about", PageController, :about
   end
 
   # Other scopes may use custom stacks.

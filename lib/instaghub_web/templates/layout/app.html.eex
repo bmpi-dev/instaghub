@@ -49,10 +49,7 @@
       <div class="nav">
           <div class="header-seach-button nav-center">
               <div class="header-search-box">
-                  <form action="/search" method="get" id="index-search">
-                      <input class="search-text" type="text" name="query" value="" placeholder="Search hastag and users">
-                      <div class="search-submit" onclick="document.getElementById('index-search').submit();"></div>
-                  </form>
+                  <input id="search" class="search-text" type="text" name="query" value="" placeholder="Search hastag and users">
               </div>
           </div>
       </div>
@@ -63,6 +60,11 @@
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <script>
      (function (window, document) {
+         $("#search").on('keydown', function(e) {
+             if(e.keyCode === 13) {
+                 window.location = window.location.origin + "/search/" + $(this).val();
+             }
+         });
          var menu = document.getElementById('menu'),
              WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
          function toggleHorizontal() {

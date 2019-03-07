@@ -1,0 +1,24 @@
+<div class="grid">
+    <%= for item <- @items do %>
+        <div class="grid-item">
+            <div class ="pure-g" style="text-align:center;">
+                <%= if Map.get(item, :username) != nil do %>
+                    <div class="pure-u-1">
+                        <a href="/user/<%= item.username %>">
+                            <img src="<%= item.profile_pic_url %>" style="width=80px;height=80px;">
+                            <p>@<%= item.username %></p>
+                        </a>
+                    </div>
+                <% end %>
+                <%= if Map.get(item, :name) != nil do %>
+                    <div class="pure-u-1">
+                        <a href="/tag/<%= item.name %>">
+                            <p>#<%= item.name %></p>
+                        </a>
+                        <p>posts: <%= item.media_count %></p>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+</div>

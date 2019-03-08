@@ -9,7 +9,7 @@ defmodule Ins.Web.API do
   @tag_hash "f92f56d47dc7a55b606908374b43a314"
   @post_hash "477b65a610463740ccdb83135b2014db"
 
-  def get_feeds(cursor \\ nil) do
+  def get_feeds(cursor \\ nil, menu \\ :sports) do
     variables = %{cached_feed_item_ids: [],
                   fetch_media_item_count: 12,
                   fetch_comment_count: 4,
@@ -23,7 +23,7 @@ defmodule Ins.Web.API do
     else
       variables
     end
-    params = [["query_hash", @feed_hash], ["variables", Poison.encode!(variables)]]
+    params = [["query_hash", @feed_hash], ["variables", Poison.encode!(variables)], ["menu", menu]]
     try do
       res = get(@graphql_url_part, params)
       feeds = res.data.user.edge_web_feed_timeline.edges
@@ -119,12 +119,37 @@ defmodule Ins.Web.API do
   end
 
   defp get(url_part, params) do
-    session = System.get_env("INSTAGRAM_SESSION_ID")
+    session = get_session(params)
     headers = ["Cookie": "sessionid=#{session}"]
     [url_part, params]
     |> build_url
     |> HTTPoison.get!(headers)
     |> handle_response
+  end
+
+  defp get_session(params) do
+    case params do
+      [["query_hash", @feed_hash], _, ["menu", menu]] -> get_menu_session(menu)
+      _ -> get_random_session()
+    end
+  end
+
+  defp get_menu_session(menu) do
+    case menu do
+      :sports -> System.get_env("INS_SESSION_ID_SPORTS")
+      :women -> System.get_env("INS_SESSION_ID_WOMEN")
+      :animal -> System.get_env("INS_SESSION_ID_ANIMAL")
+      :game -> System.get_env("INS_SESSION_ID_GAME")
+      :food -> System.get_env("INS_SESSION_ID_FOOD")
+      :hot -> System.get_env("INS_SESSION_ID_HOT")
+      _ -> get_random_session()
+    end
+  end
+
+  defp get_random_session() do
+    ["INS_SESSION_ID_SPORTS", "INS_SESSION_ID_WOMEN", "INS_SESSION_ID_ANIMAL", "INS_SESSION_ID_GAME", "INS_SESSION_ID_FOOD", "INS_SESSION_ID_HOT"]
+    |> Enum.random
+    |> System.get_env
   end
 
   defp handle_response(%HTTPoison.Response{status_code: code, body: body}) do
@@ -137,7 +162,11 @@ defmodule Ins.Web.API do
   end
 
   defp build_url([part, params]) do
-    url = "#{@base_url}#{part}?#{params_join(params)}"
+    params = params |> Enum.reverse
+    url = case params do
+      [["menu", _] | new_params] -> "#{@base_url}#{part}?#{params_join(new_params |> Enum.reverse)}"
+      _ -> "#{@base_url}#{part}?#{params_join(params |> Enum.reverse)}"
+    end
     Logger.debug url
     url
   end

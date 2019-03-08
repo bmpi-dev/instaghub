@@ -18,13 +18,25 @@ defmodule InstaghubWeb.PageController do
   end
 
   def index(%Plug.Conn{request_path: path} = conn, _params) do
-    Logger.debug path
     cursor = Cache.get_cursor(conn)
     redis_key_md5 = Cache.get_page_key(conn, cursor)
     page = Cache.get_page(conn)
     feeds_with_page =
     if page == nil do
-      feeds_with_page = API.get_feeds(cursor)
+      feeds_with_page = case path do
+                          "/" -> API.get_feeds(cursor, :sports)
+                          "/explore/women" -> API.get_feeds(cursor, :women)
+                          "/explore/women/" -> API.get_feeds(cursor, :women)
+                          "/explore/animal" -> API.get_feeds(cursor, :animal)
+                          "/explore/animal/" -> API.get_feeds(cursor, :animal)
+                          "/explore/game" -> API.get_feeds(cursor, :game)
+                          "/explore/game/" -> API.get_feeds(cursor, :game)
+                          "/explore/food" -> API.get_feeds(cursor, :food)
+                          "/explore/food/" -> API.get_feeds(cursor, :food)
+                          "/explore/hot" -> API.get_feeds(cursor, :hot)
+                          "/explore/hot/" -> API.get_feeds(cursor, :hot)
+                          _ -> API.get_feeds(cursor)
+                        end
       if feeds_with_page != nil do
         feeds_bin = :erlang.term_to_binary(feeds_with_page)
         RedisUtil.setx(redis_key_md5, feeds_bin)

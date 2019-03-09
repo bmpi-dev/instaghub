@@ -9,6 +9,15 @@ defmodule Ins.Web.API do
   @tag_hash "f92f56d47dc7a55b606908374b43a314"
   @post_hash "477b65a610463740ccdb83135b2014db"
 
+  defp log_err(err, func, msg) do
+    Logger.error "error log info begin [#{DateTime.to_string(DateTime.utc_now)}] ===>"
+    err |> IO.inspect
+    func |> IO.inspect
+    msg |> IO.inspect
+    Logger.error "error log info end ===>"
+    nil
+  end
+
   def get_feeds(cursor \\ nil, menu \\ :sports) do
     variables = %{cached_feed_item_ids: [],
                   fetch_media_item_count: 12,
@@ -30,7 +39,7 @@ defmodule Ins.Web.API do
       |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))
       %{page_info: res.data.user.edge_web_feed_timeline.page_info, posts: feeds}
     rescue
-      _ -> nil
+      err -> log_err(err, :get_feeds, nil)
     end
   end
 
@@ -52,7 +61,7 @@ defmodule Ins.Web.API do
       |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))
       %{count: user_posts.count, page_info: user_posts.page_info, posts: posts}
     rescue
-      _ -> nil
+      err -> log_err(err, :get_user_posts, nil)
     end
   end
 
@@ -74,7 +83,7 @@ defmodule Ins.Web.API do
         %{count: s.count, page_info: s.page_info, posts: s.edges |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))}
       end)
     rescue
-      _ -> nil
+      err -> log_err(err, :get_tag_posts, nil)
     end
   end
 
@@ -90,7 +99,7 @@ defmodule Ins.Web.API do
       res = get(@graphql_url_part, params)
       Ins.Web.Parser.parse_media(res.data.shortcode_media)
     rescue
-      _ -> nil
+      err -> log_err(err, :get_post_comment, nil)
     end
   end
 
@@ -104,7 +113,7 @@ defmodule Ins.Web.API do
         %{count: s.count, page_info: s.page_info, posts: s.edges |> Enum.map(&Ins.Web.Parser.parse_media(&1.node))}
       end)
     rescue
-      _ -> nil
+      err -> log_err(err, :get_user_profile, nil)
     end
   end
 
@@ -114,12 +123,13 @@ defmodule Ins.Web.API do
       res = get(@search_url_part, params)
       Ins.Web.Parser.parse_search_result(res)
     rescue
-      _ -> nil
+      err -> log_err(err, :search_tags_users, nil)
     end
   end
 
   defp get(url_part, params) do
     session = get_session(params)
+    Logger.debug "session: #{session}"
     headers = ["Cookie": "sessionid=#{session}"]
     [url_part, params]
     |> build_url
@@ -152,12 +162,16 @@ defmodule Ins.Web.API do
     |> System.get_env
   end
 
-  defp handle_response(%HTTPoison.Response{status_code: code, body: body}) do
-    case code do
-      200 ->
-        Poison.decode!(body, keys: :atoms)
-      _ ->
-        raise(Instaghub.Error, [code: code, message: "#{body}"])
+  defp handle_response(res) do
+    case res do
+      %HTTPoison.Response{status_code: code, body: body} ->
+        case code do
+          200 ->
+            Poison.decode!(body, keys: :atoms)
+          _ ->
+            raise(Instaghub.Error, [code: code, message: "#{body}"])
+        end
+      err -> log_err(err, :handle_response, res)
     end
   end
 

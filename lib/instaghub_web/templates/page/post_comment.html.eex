@@ -1,66 +1,68 @@
-<div class="pure-g">
-    <div class="pure-u-0 pure-u-md-4-24"></div>
-    <div class="pure-u-1 pure-u-md-16-24">
-        <div class="post-comment-media">
-            <%= if @post.__typename == "GraphVideo" do %>
-                <video class="" src="<%= @post.video_url %>" poster="<%= @post.display_url %>" type="video/mp4" preload="none" loop="" controls autoplay></video>
-            <% end %>
-            <%= if @post.__typename == "GraphSidecar" do %>
-                <%= for media <- @post.edge_sidecar_to_children do %>
-                  <%= if media.__typename == "GraphVideo" do %>
-                      <video class="" src="<%= media.video_url %>" poster="<%= media.display_url %>" type="video/mp4" preload="none" loop="" controls autoplay></video>
-                  <% end %>
-                  <%= if media.__typename == "GraphImage" do %>
-                      <img src="<%= media.display_url %>">
-                  <% end %>
+<%= if @post.__typename == "GraphVideo" ||  @post.__typename == "GraphImage" ||  @post.__typename == "GraphSidecar" do %>
+    <div class="pure-g">
+        <div class="pure-u-0 pure-u-md-4-24"></div>
+        <div class="pure-u-1 pure-u-md-16-24">
+            <div class="post-comment-media">
+                <%= if @post.__typename == "GraphVideo" do %>
+                    <video class="" src="<%= @post.video_url %>" poster="<%= @post.display_url %>" type="video/mp4" preload="none" loop="" controls autoplay></video>
                 <% end %>
-            <% end %>
-            <%= if @post.__typename == "GraphImage" do %>
-                <img src="<%= @post.display_url %>">
-            <% end %>
-        </div>
-        <div class="post-comment-info">
-            <div class="owner pure-g">
-                <div class="pure-u-1-5 pure-u-md-3-24" style="text-align:center;">
-                    <a href="/user/<%= @post.owner.username %>">
-                        <img src="<%= @post.owner.profile_pic_url %>" style="border-radius:50%">
-                    </a>
-                </div>
-                <div class="info pure-u-4-5 pure-u-md-21-24">
-                    <a href="/user/<%= @post.owner.username %>">
-                        <p>@<%= @post.owner.username %></p>
-                    </a>
-                    <%= @post.taken_at_timestamp %>
-                    <div class="caption">
-                        <%= Instaghub.Utils.parse_link(@post.edge_media_to_caption) %>
-                    </div>
-                    <div class="stats">
-                        comments: <%= @post.edge_media_to_comment.count %>
-                        likes: <%= @post.edge_media_preview_like %>
-                    </div>
-                </div>
-            </div>
-            <div class="ad">
-            </div>
-            <div class="comments">
-                <div class="head">comments</div>
-                <div class="list pure-g">
-                    <%= for comment <- @post.edge_media_to_comment.edges do %>
-                        <div class="comment-user pure-u-1-6 pure-u-md-2-24" style="text-align:center;">
-                            <a href="/user/<%= comment.owner.username %>">
-                                <img src="<%= comment.owner.profile_pic_url %>" style="border-radius:50%;">
-                            </a>
-                        </div>
-                        <div class="comment-text pure-u-5-6 pure-u-md-22-24">
-                            <a href="/user/<%= comment.owner.username %>">
-                                @<%= comment.owner.username %>
-                            </a>
-                            <p style="font-weight: normal;margin-bottom:0;"><%= Instaghub.Utils.parse_link(comment.text) %><span style="font-weight: 100;"> - <%= comment.created_at %></span></p>
-                        </div>
+                <%= if @post.__typename == "GraphSidecar" do %>
+                    <%= for media <- @post.edge_sidecar_to_children do %>
+                        <%= if media.__typename == "GraphVideo" do %>
+                            <video class="" src="<%= media.video_url %>" poster="<%= media.display_url %>" type="video/mp4" preload="none" loop="" controls autoplay></video>
+                        <% end %>
+                        <%= if media.__typename == "GraphImage" do %>
+                            <img src="<%= media.display_url %>">
+                        <% end %>
                     <% end %>
+                <% end %>
+                <%= if @post.__typename == "GraphImage" do %>
+                    <img src="<%= @post.display_url %>">
+                <% end %>
+            </div>
+            <div class="post-comment-info">
+                <div class="owner pure-g">
+                    <div class="pure-u-1-5 pure-u-md-3-24" style="text-align:center;">
+                        <a href="/user/<%= @post.owner.username %>">
+                            <img src="<%= @post.owner.profile_pic_url %>" style="border-radius:50%">
+                        </a>
+                    </div>
+                    <div class="info pure-u-4-5 pure-u-md-21-24">
+                        <a href="/user/<%= @post.owner.username %>">
+                            <p>@<%= @post.owner.username %></p>
+                        </a>
+                        <%= @post.taken_at_timestamp %>
+                        <div class="caption">
+                            <%= Instaghub.Utils.parse_link(@post.edge_media_to_caption) %>
+                        </div>
+                        <div class="stats">
+                            comments: <%= @post.edge_media_to_comment.count %>
+                            likes: <%= @post.edge_media_preview_like %>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad">
+                </div>
+                <div class="comments">
+                    <div class="head">comments</div>
+                    <div class="list pure-g">
+                        <%= for comment <- @post.edge_media_to_comment.edges do %>
+                            <div class="comment-user pure-u-1-6 pure-u-md-2-24" style="text-align:center;">
+                                <a href="/user/<%= comment.owner.username %>">
+                                    <img src="<%= comment.owner.profile_pic_url %>" style="border-radius:50%;">
+                                </a>
+                            </div>
+                            <div class="comment-text pure-u-5-6 pure-u-md-22-24">
+                                <a href="/user/<%= comment.owner.username %>">
+                                    @<%= comment.owner.username %>
+                                </a>
+                                <p style="font-weight: normal;margin-bottom:0;"><%= Instaghub.Utils.parse_link(comment.text) %><span style="font-weight: 100;"> - <%= comment.created_at %></span></p>
+                            </div>
+                        <% end %>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="pure-u-0 pure-u-md-4-24"></div>
     </div>
-    <div class="pure-u-0 pure-u-md-4-24"></div>
-</div>
+<% end %>

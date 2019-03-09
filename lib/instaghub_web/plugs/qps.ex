@@ -1,7 +1,7 @@
 defmodule InstaghubWeb.Plug.QPS do
   require Logger
 
-  @max_qps 10
+  @max_qps 44
 
   def init(options) do
     # initialize options

@@ -20,7 +20,14 @@ defmodule Ins.Web.Parser do
   end
 
   defp parse_media_caption(media) do
-    Map.update(media, :edge_media_to_caption, media.edge_media_to_caption, fn(s) -> s.edges |> Enum.reduce("", fn(x, acc) -> acc <> "\n" <> x.node.text end) |> String.trim("\n") end)
+    Map.update(media, :edge_media_to_caption, media.edge_media_to_caption, fn(s) ->
+      case s do
+        nil -> nil
+        s -> s.edges
+        |> Enum.reduce("", fn(x, acc) -> acc <> "\n" <> x.node.text end)
+        |> String.trim("\n")
+      end
+    end)
   end
 
   defp parse_media_preview_like(media) do
@@ -64,7 +71,10 @@ defmodule Ins.Web.Parser do
   defp parse_media_sidecar(media) do
     if media.edge_sidecar_to_children != nil do
       Map.update(media, :edge_sidecar_to_children, media.edge_sidecar_to_children, fn(s) ->
-        s.edges |> Enum.map(&struct(Ins.Web.Model.Media, &1.node))
+        case s do
+          nil -> nil
+          s -> s.edges |> Enum.map(&struct(Ins.Web.Model.Media, &1.node))
+        end
       end)
     else
       media

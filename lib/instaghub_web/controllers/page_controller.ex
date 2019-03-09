@@ -3,6 +3,8 @@ defmodule InstaghubWeb.PageController do
   alias Ins.Web.API
   alias Instaghub.RedisUtil
   alias InstaghubWeb.Plug.Cache
+  alias InstaghubWeb.Model.TKD
+  alias InstaghubWeb.SEO
   require Logger
 
   defp handle_404(conn) do
@@ -50,7 +52,7 @@ defmodule InstaghubWeb.PageController do
       handle_404(conn)
     else
       if cursor == nil do
-        render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+        render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info, seo: SEO.get_index_seo(path, feeds_with_page))
       else
         conn
         |> put_layout(false)
@@ -78,7 +80,7 @@ defmodule InstaghubWeb.PageController do
     if feeds_with_page == nil do
       handle_404(conn)
     else
-      render(conn, "post_comment.html", post: feeds_with_page)
+      render(conn, "post_comment.html", post: feeds_with_page, seo: SEO.get_post_seo(feeds_with_page))
     end
   end
 
@@ -107,7 +109,7 @@ defmodule InstaghubWeb.PageController do
       handle_404(conn)
     else
       if cursor == nil do
-        render(conn, "user.html", posts: feeds_with_page.edge_owner_to_timeline_media.posts, page_info: feeds_with_page.edge_owner_to_timeline_media.page_info, user: feeds_with_page)
+        render(conn, "user.html", posts: feeds_with_page.edge_owner_to_timeline_media.posts, page_info: feeds_with_page.edge_owner_to_timeline_media.page_info, user: feeds_with_page, seo: SEO.get_user_seo(feeds_with_page))
       else
         conn
         |> put_layout(false)
@@ -137,7 +139,7 @@ defmodule InstaghubWeb.PageController do
       handle_404(conn)
     else
       if cursor == nil do
-        render(conn, "tag.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info, tag: feeds_with_page)
+        render(conn, "tag.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info, tag: feeds_with_page, seo: SEO.get_tag_seo(feeds_with_page))
       else
         conn
         |> put_layout(false)

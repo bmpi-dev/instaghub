@@ -17,11 +17,13 @@ defmodule Instaghub.Utils do
     str
     |> (fn(x) -> Regex.replace(~r/[@][^\s#@$!?]+/, x, "<a href=\"/user/\\0\">\\0</a>", global: true) end).()
     |> String.replace("/user/@", "/user/")
+    |> String.replace(".\">", "\">")
   end
 
   defp parse_hashtag_link(str) do
     str
     |> (fn(x) -> Regex.replace(~r/[#][^\s#@$!?]+/, x, "<a href=\"/tag/\\0\">\\0</a>", global: true) end).()
     |> String.replace("/tag/#", "/tag/")
+    |> String.replace(".\">", "\">")
   end
 end

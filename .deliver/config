@@ -2,17 +2,57 @@ APP="instaghub"
 
 BUILD_HOST="instaghub.com"
 BUILD_USER="root"
-BUILD_AT="/root/instaghub/app_build"
+BUILD_AT="/root/$APP/app_build"
+
+START_DEPLOY=true
+CLEAN_DEPLOY=true
+
+# prevent re-installing node modules; this defaults to "."
+GIT_CLEAN_PATHS="_build rel priv/static"
 
 PRODUCTION_HOSTS="instaghub.com" 
 PRODUCTION_USER="root" 
-DELIVER_TO="/root/instaghub/app_release"
+DELIVER_TO="/root/$APP/app_release"
 
+# For Phoenix projects, symlink prod.secret.exs to our tmp source
 pre_erlang_get_and_update_deps() {
-  local _prod_secret_path="/root/instaghub/app_config/prod.secret.exs"
+  local _prod_secret_path="/root/$APP/app_config/prod.secret.exs"
   if [ "$TARGET_MIX_ENV" = "prod" ]; then
+    status "Linking '$_prod_secret_path'"
     __sync_remote "
+      [ -f ~/.profile ] && source ~/.profile
+      mkdir -p '$BUILD_AT'
       ln -sfn '$_prod_secret_path' '$BUILD_AT/config/prod.secret.exs'
     "
   fi
+}
+
+pre_erlang_clean_compile() {
+  status "Running npm install"
+    __sync_remote "
+      [ -f ~/.profile ] && source ~/.profile
+      set -e
+      cd '$BUILD_AT'/assets
+      npm install
+    "
+
+  status "Compiling assets"
+    __sync_remote "
+      [ -f ~/.profile ] && source ~/.profile
+      set -e
+      cd '$BUILD_AT'/assets
+      node_modules/.bin/webpack --mode production --silent
+    "
+
+  status "Running phoenix.digest" # log output prepended with "----->"
+  __sync_remote " # runs the commands on the build host
+    [ -f ~/.profile ] && source ~/.profile # load profile (optional)
+    set -e # fail if any command fails (recommended)
+    cd '$BUILD_AT' # enter the build directory on the build host (required)
+    # prepare something
+    mkdir -p priv/static # required by the phoenix.digest task
+    # run your custom task
+    APP='$APP' MIX_ENV='$TARGET_MIX_ENV' $MIX_CMD phx.digest $SILENCE
+    APP='$APP' MIX_ENV='$TARGET_MIX_ENV' $MIX_CMD phx.digest.clean $SILENCE
+  "
 }

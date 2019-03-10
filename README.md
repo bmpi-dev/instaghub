@@ -18,3 +18,18 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+
+## Deployment
+### local src upload build server to compile
+mix edeliver build release production
+### build server copy target app to production server
+mix edeliver deploy release to production
+### start production server
+mix edeliver restart production
+
+## Edeliver
+mix edeliver ping production # shows which nodes are up and running
+mix edeliver version production # shows the release version running on the nodes
+mix edeliver show migrations on production # shows pending database migrations
+mix edeliver migrate production # run database migrations
+mix edeliver restart production # or start or stop

@@ -49,7 +49,9 @@ defmodule Instaghub.MixProject do
       {:redix, "~> 0.9.2"},
       {:poolboy, "~> 1.5.1"},
       {:credo, "~> 1.0.0", only: [:dev, :test]},
-      {:dogma, "~> 0.1.16", only: [:dev]}
+      {:dogma, "~> 0.1.16", only: [:dev]},
+      {:edeliver, ">= 1.6.0"},
+      {:distillery, "~> 2.0", warn_missing: false}
     ]
   end
 

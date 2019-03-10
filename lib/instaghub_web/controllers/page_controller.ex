@@ -3,7 +3,6 @@ defmodule InstaghubWeb.PageController do
   alias Ins.Web.API
   alias Instaghub.RedisUtil
   alias InstaghubWeb.Plug.Cache
-  alias InstaghubWeb.Model.TKD
   alias InstaghubWeb.SEO
   require Logger
 

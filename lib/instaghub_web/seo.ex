@@ -20,42 +20,42 @@ defmodule InstaghubWeb.SEO do
     end
   end
 
-  defp get_sports_seo(page) do
+  defp get_sports_seo(_page) do
     title = "Instaghub.com - A instagram viewer, you can find all instagram posts about sports, sexy women, animal, games, food, hot tv shows in instaghub.com!"
     description = "Find hot users, hashtags, posts about women, animal, game, foods on instagram. Instaghub.com is your instagram viewer and it doesn't need login!"
     keywords = "NBA, LeBron James, NFL, 9GAG, House of Highlights, Juventus Football Club, FC Barcelona, Leo Messi, Cristiano Ronaldo, LaLiga, UEFA Champions League, SportsCenter, espn, Los Angeles Lakers"
     %{title: title, description: description, keywords: keywords}
   end
 
-  defp get_women_seo(page) do
+  defp get_women_seo(_page) do
     title = "Instaghub.com - A instagram viewer, you can find all instagram posts about sports, sexy women, animal, games, food, hot tv shows in instaghub.com!"
     description = "Find hot users, hashtags, posts about women, animal, game, foods on instagram. Instaghub.com is your instagram viewer and it doesn't need login!"
     keywords = "Women swear, women clothing, women fashion, women lift,  fashion designer, women explore,   women health, women shoes, women fitness, women fitness"
     %{title: title, description: description, keywords: keywords}
   end
 
-  defp get_animal_seo(page) do
+  defp get_animal_seo(_page) do
     title = "Instaghub.com - A instagram viewer, you can find all instagram posts about sports, sexy women, animal, games, food, hot tv shows in instaghub.com!"
     description = "Find hot users, hashtags, posts about women, animal, game, foods on instagram. Instaghub.com is your instagram viewer and it doesn't need login!"
     keywords = "Lovely Cats, kitten, kitty, dogs, lovely dogs,  dogs showtimes, dogs adventures, dog training, puppy"
     %{title: title, description: description, keywords: keywords}
   end
 
-  defp get_game_seo(page) do
+  defp get_game_seo(_page) do
     title = "Instaghub.com - A instagram viewer, you can find all instagram posts about sports, sexy women, animal, games, food, hot tv shows in instaghub.com!"
     description = "Find hot users, hashtags, posts about women, animal, game, foods on instagram. Instaghub.com is your instagram viewer and it doesn't need login!"
     keywords = "Cosplay, cosplayer, game video, nba2k, minecraft, playstation, blizzard, pokemon, nintendo, fortnite, twitch, fazeclan, pubg"
     %{title: title, description: description, keywords: keywords}
   end
 
-  defp get_food_seo(page) do
+  defp get_food_seo(_page) do
     title = "Instaghub.com - A instagram viewer, you can find all instagram posts about sports, sexy women, animal, games, food, hot tv shows in instaghub.com!"
     description = "Find hot users, hashtags, posts about women, animal, game, foods on instagram. Instaghub.com is your instagram viewer and it doesn't need login!"
     keywords = "Food cook, food discoover, icecream, kitchen, food craft, food video, healthy food, buzzfeed food, chocolate, dinner"
     %{title: title, description: description, keywords: keywords}
   end
 
-  defp get_hot_seo(page) do
+  defp get_hot_seo(_page) do
     title = "Instaghub.com - A instagram viewer, you can find all instagram posts about sports, sexy women, animal, games, food, hot tv shows in instaghub.com!"
     description = "Find hot users, hashtags, posts about women, animal, game, foods on instagram. Instaghub.com is your instagram viewer and it doesn't need login!"
     keywords = "Gameofthrones, peterdinklage,hbo,imdb,hot tv show, marvel, therock, thehughjackman, leonardodicaprio,  hot firms, hot tv videos,  Warner Bros, Sony Pictures, Walt Disney, Universal Pictures, 20th Century Fox, The Weinstein Company, DreamWorks Pictures"

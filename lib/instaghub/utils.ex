@@ -8,6 +8,7 @@ defmodule Instaghub.Utils do
 
   def parse_link(str) do
     str
+    |> String.downcase
     |> parse_user_link
     |> parse_hashtag_link
     |> HTML.raw

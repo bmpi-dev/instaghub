@@ -129,7 +129,7 @@ defmodule Ins.Web.API do
 
   defp get(url_part, params) do
     session = get_session(params)
-    Logger.debug "session: #{session}"
+    Logger.info "session: #{session}"
     headers = ["Cookie": "sessionid=#{session}"]
     [url_part, params]
     |> build_url

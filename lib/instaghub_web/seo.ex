@@ -44,7 +44,7 @@ defmodule InstaghubWeb.SEO do
   defp get_game_seo(_page) do
     title = "Instaghub.com - Your instagram viewer no need login!"
     description = "Find hot users, hashtags, posts about women, animals, games, foods on instagram. Instaghub.com is your instagram viewer no need login!"
-    keywords = "Cosplay, cosplayer, game video, nba2k, minecraft, playstation, blizzard, pokemon, nintendo, fortnite, twitch, fazeclan, pubg"
+    keywords = "car,Maserati,Jaguar,Mercedes-Benz,Mercedes-AMG,Porsche,BMW,Ferrari,BUGATTI,Lamborghini,Cosplay, cosplayer, game video, nba2k, minecraft, playstation, blizzard, pokemon, nintendo, fortnite, twitch, fazeclan, pubg"
     %{title: title, description: description, keywords: keywords}
   end
 

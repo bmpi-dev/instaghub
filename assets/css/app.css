@@ -307,3 +307,7 @@ body { font-family: sans-serif; }
 .user-profile p {
     margin: 0;
 }
+
+.ads {
+    height: auto;
+}

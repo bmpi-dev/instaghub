@@ -4,7 +4,7 @@
 <div class="page" style="display:none;">
     <%= raw @page_info.end_cursor %>
 </div>
-<%= for post <- @posts do %>
+<%= for {post, ins} <- Enum.with_index(@posts) do %>
     <div class="grid-item">
         <div class="grid-media">
             <a class="" href="<%= "/post/" <> post.shortcode %>">
@@ -35,4 +35,18 @@
             </div>
         </div>
     </div>
+    <%= if ins == 3 || ins == 7 || ins == 10 do %>
+    <div class="grid-item ads">
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-format="fluid"
+               data-ad-layout-key="+2n+qz+1e-1l+59"
+               data-ad-client="ca-pub-1886683614725279"
+               data-ad-slot="5419379615"></ins>
+          <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+     </div>
+    <% end %>
 <% end %>

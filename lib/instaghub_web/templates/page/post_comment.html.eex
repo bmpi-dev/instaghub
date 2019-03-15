@@ -41,7 +41,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="ad">
+                <div class="ads" style="width=100%;">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-format="fluid"
+                         data-ad-layout-key="+2n+qz+1e-1l+59"
+                         data-ad-client="ca-pub-1886683614725279"
+                         data-ad-slot="5419379615"></ins>
+                    <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
                 <div class="comments">
                     <div class="head">comments</div>

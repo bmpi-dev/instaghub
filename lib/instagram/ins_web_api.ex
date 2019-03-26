@@ -70,6 +70,7 @@ defmodule Ins.Web.API do
                   show_ranked: false,
                   first: 10
                  }
+    variables =
     if cursor != nil do
       Map.put(variables, :after, cursor)
     else

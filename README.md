@@ -29,7 +29,11 @@ mix edeliver restart production
 
 ## Edeliver
 mix edeliver ping production # shows which nodes are up and running
+
 mix edeliver version production # shows the release version running on the nodes
+
 mix edeliver show migrations on production # shows pending database migrations
+
 mix edeliver migrate production # run database migrations
+
 mix edeliver restart production # or start or stop

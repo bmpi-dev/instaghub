@@ -36,13 +36,15 @@
         </div>
     </div>
     <%= if ins == 3 || ins == 7 || ins == 10 do %>
-        <div class="grid-item ads" style="min-width=250px;">
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-format="fluid"
-               data-ad-layout-key="+2n+qz+1e-1l+59"
-               data-ad-client="ca-pub-1886683614725279"
-               data-ad-slot="5419379615"></ins>
+        <div class="grid-item" style="">
+            <div class="ads">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-format="fluid"
+                     data-ad-layout-key="+2n+qz+1e-1l+59"
+                     data-ad-client="ca-pub-1886683614725279"
+                     data-ad-slot="5419379615"></ins>
+            </div>
         </div>
     <% end %>
 <% end %>

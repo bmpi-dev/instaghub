@@ -107,10 +107,17 @@ $.fn.masonryImagesReveal = function($items, isAppend) {
                 var $item = $(image.img).parents(".grid-item");
                 $item.show();
                 $grid.masonry('appended', $item);
+                // show next ads
+                var $ads = $(image.img).parents(".grid-item").next().children(".ads");
+                if ($ads.length!=0) {
+                    var $item_ads = $(image.img).parents(".grid-item").next();
+                    $item_ads.show();
+                    $grid.masonry('appended', $item_ads);
+                    $ads.children('ins').each(function(){
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    });
+                }
             }).always( function( instance ){
-                $('ins').each(function(){
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                });
             });
     } else {
         $items.imagesLoaded()

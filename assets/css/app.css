@@ -310,5 +310,8 @@ body { font-family: sans-serif; }
 
 .ads {
     min-width: 250px;
+    min-height: 250px;
+    max-height: 400px;
     height: auto;
+    overflow:hidden;
 }

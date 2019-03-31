@@ -41,7 +41,7 @@ $grid.masonry( 'on', 'layoutComplete', function() {
 // import socket from "./socket"
 var is_get_new_page = 0;
 $(window).scroll(function() {
-    if($(window).scrollTop() + $(window).height() == $(document).height() && $("#load_next_page").length > 0) {
+    if($(window).scrollTop() + $(window).height() + 100 >= ($(document).height()) && $("#load_next_page").length > 0) {
         // bottom to get new page
         if(is_get_new_page == 0) {
             $("#load_next_page").show();
@@ -112,10 +112,20 @@ $.fn.masonryImagesReveal = function($items, isAppend) {
                 if ($ads.length!=0) {
                     var $item_ads = $(image.img).parents(".grid-item").next();
                     $item_ads.show();
-                    $grid.masonry('appended', $item_ads);
+                    var adsbygoogle=(adsbygoogle = window.adsbygoogle || []);
+                    var $error = 0;
                     $ads.children('ins').each(function(){
-                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        try {
+                            adsbygoogle.push(this);
+                        } catch(error) {
+                            $error = 1;
+                        }
                     });
+                    if ($error == 0) {
+                        $grid.masonry('appended', $item_ads);
+                    } else {
+                        $item_ads.hide();
+                    }
                 }
             }).always( function( instance ){
             });

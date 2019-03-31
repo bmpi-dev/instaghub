@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ads pure-g" style="margin-top:20px;">
+                <div class="pure-g" style="margin-top:10px;margin-bottom:10px;max-height:100px;">
                     <div class="pure-u-1-1">
                         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <!-- post-comment-owner -->
@@ -72,7 +72,7 @@
                                 <p style="font-weight: normal;margin-bottom:0;"><%= Instaghub.Utils.parse_link(comment.text) %><span style="font-weight: 100;"> - <%= comment.created_at %></span></p>
                             </div>
                             <%= if ins == 1 || ins == 9 || ins == 19 || ins == 34 || ins == 49 do %>
-                                <div class="ads comment-user pure-u-1-1" style="">
+                                <div class="pure-u-1-1" style="max-height:50px;">
                                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                                     <!-- post-comment-info -->
                                     <ins class="adsbygoogle"

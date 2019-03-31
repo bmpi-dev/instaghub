@@ -107,6 +107,10 @@ $.fn.masonryImagesReveal = function($items, isAppend) {
                 var $item = $(image.img).parents(".grid-item");
                 $item.show();
                 $grid.masonry('appended', $item);
+            }).always( function( instance ){
+                $('ins').each(function(){
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                });
             });
     } else {
         $items.imagesLoaded()
@@ -115,9 +119,6 @@ $.fn.masonryImagesReveal = function($items, isAppend) {
                 // trigger initial layout
                 $items.show();
                 $grid.masonry();
-                $('ins').each(function(){
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                });
             })
             .done( function( instance ) {
                 // console.log('all images successfully loaded');

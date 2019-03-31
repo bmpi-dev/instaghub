@@ -41,22 +41,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="ads" style="width=100%;">
-                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-format="fluid"
-                         data-ad-layout-key="+2n+qz+1e-1l+59"
-                         data-ad-client="ca-pub-1886683614725279"
-                         data-ad-slot="5419379615"></ins>
-                    <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
+                <div class="ads owner pure-g" style="width=100%;max-height=120px;min-height=50px;min-width=250px;">
+                    <div class="pure-u-1-1">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- post-comment-owner -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-1886683614725279"
+                             data-ad-slot="3917016677"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
                 </div>
                 <div class="comments">
                     <div class="head">comments</div>
                     <div class="list pure-g">
-                        <%= for comment <- @post.edge_media_to_comment.edges do %>
+                        <%= for {comment, ins} <- Enum.with_index(@post.edge_media_to_comment.edges) do %>
                             <div class="comment-user pure-u-1-6 pure-u-md-2-24" style="text-align:center;">
                                 <a href="/user/<%= comment.owner.username %>">
                                     <img src="<%= comment.owner.profile_pic_url %>" style="border-radius:50%;">
@@ -68,6 +71,21 @@
                                 </a>
                                 <p style="font-weight: normal;margin-bottom:0;"><%= Instaghub.Utils.parse_link(comment.text) %><span style="font-weight: 100;"> - <%= comment.created_at %></span></p>
                             </div>
+                            <%= if ins == 1 || ins == 9 || ins == 19 || ins == 34 || ins == 49 do %>
+                                <div class="ads comment-user pure-u-1-1" style="width=100%;max-height=100px;min-height=50px;min-width=250px;">
+                                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                    <!-- post-comment-owner -->
+                                    <ins class="adsbygoogle"
+                                         style="display:block"
+                                         data-ad-client="ca-pub-1886683614725279"
+                                         data-ad-slot="3917016677"
+                                         data-ad-format="auto"
+                                         data-full-width-responsive="true"></ins>
+                                    <script>
+                                     (adsbygoogle = window.adsbygoogle || []).push({});
+                                    </script> 
+                                </div>
+                            <% end %>
                         <% end %>
                     </div>
                 </div>

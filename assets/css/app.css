@@ -309,5 +309,6 @@ body { font-family: sans-serif; }
 }
 
 .ads {
+    min-width: 250px;
     height: auto;
 }

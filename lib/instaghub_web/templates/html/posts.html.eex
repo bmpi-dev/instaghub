@@ -36,7 +36,7 @@
         </div>
     </div>
     <%= if ins == 3 || ins == 7 || ins == 10 do %>
-    <div class="grid-item ads">
+        <div class="grid-item ads" style="min-width=250px;">
           <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
           <ins class="adsbygoogle"
                style="display:block"

@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ads owner pure-g" style="width=100%;max-height=120px;min-height=50px;min-width=250px;">
+                <div class="ads pure-g" style="margin-top=20px;">
                     <div class="pure-u-1-1">
                         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <!-- post-comment-owner -->
@@ -72,18 +72,18 @@
                                 <p style="font-weight: normal;margin-bottom:0;"><%= Instaghub.Utils.parse_link(comment.text) %><span style="font-weight: 100;"> - <%= comment.created_at %></span></p>
                             </div>
                             <%= if ins == 1 || ins == 9 || ins == 19 || ins == 34 || ins == 49 do %>
-                                <div class="ads comment-user pure-u-1-1" style="width=100%;max-height=100px;min-height=50px;min-width=250px;">
+                                <div class="ads comment-user pure-u-1-1" style="">
                                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                    <!-- post-comment-owner -->
+                                    <!-- post-comment-info -->
                                     <ins class="adsbygoogle"
                                          style="display:block"
                                          data-ad-client="ca-pub-1886683614725279"
-                                         data-ad-slot="3917016677"
+                                         data-ad-slot="2504573093"
                                          data-ad-format="auto"
                                          data-full-width-responsive="true"></ins>
                                     <script>
                                      (adsbygoogle = window.adsbygoogle || []).push({});
-                                    </script> 
+                                    </script>
                                 </div>
                             <% end %>
                         <% end %>

@@ -115,6 +115,9 @@ $.fn.masonryImagesReveal = function($items, isAppend) {
                 // trigger initial layout
                 $items.show();
                 $grid.masonry();
+                $('ins').each(function(){
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                });
             })
             .done( function( instance ) {
                 // console.log('all images successfully loaded');

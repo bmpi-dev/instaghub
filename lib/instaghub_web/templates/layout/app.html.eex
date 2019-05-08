@@ -36,9 +36,11 @@
         <script>
          var trackOutboundLink = function(url) {
              var redirectTriggered = false;
-             ga('send', 'event', 'outbound', 'click', url, {
-                 hitCallback: function() {
-                     redirectTriggered = true;
+             gtag('event', 'click', {
+                 'event_category' : 'outbound',
+                 'event_label' : 'https://www.avoalre.net',
+                 'event_callback' : function() {
+  	                 redirectTriggered = true;
                      document.location = url;
                  }
              });
@@ -73,15 +75,15 @@
                         <li class="pure-menu-item"><a href="/explore/game" class="pure-menu-link">Game</a></li>
                         <li class="pure-menu-item"><a href="/explore/food" class="pure-menu-link">Food</a></li>
                         <li class="pure-menu-item"><a href="/explore/hot" class="pure-menu-link">Hot</a></li>
-                        <li class="pure-menu-item"><a href="https://www.avoalre.net/" onclick="trackOutboundLink('https://www.avoalre.net'); return false;" target="_blank" class="pure-menu-link">Avoalre Sunglasses</a></li>
                     </ul>
                 </div>
             </div>
             <div class="pure-u-1 pure-u-md-1-3">
                 <div class="pure-menu pure-menu-horizontal custom-menu-3 custom-can-transform">
                     <ul class="pure-menu-list">
-                        <li class="pure-menu-item"><a href="/privacy" class="pure-menu-link">Privacy Policy</a></li>
-                        <li class="pure-menu-item"><a href="/about" class="pure-menu-link">About US</a></li>
+                        <li class="pure-menu-item"><a href="/privacy" class="pure-menu-link">Privacy</a></li>
+                        <li class="pure-menu-item"><a href="/about" class="pure-menu-link">About</a></li>
+                        <li class="pure-menu-item"><a href="https://www.avoalre.net/" onclick="trackOutboundLink('https://www.avoalre.net'); return false;" target="_blank" class="pure-menu-link">Avoalre Sunglasses</a></li>
                     </ul>
                 </div>
             </div>

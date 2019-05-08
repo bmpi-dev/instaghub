@@ -33,6 +33,22 @@
              enable_page_level_ads: true
          });
         </script>
+        <script>
+         var trackOutboundLink = function(url) {
+             var redirectTriggered = false;
+             ga('send', 'event', 'outbound', 'click', url, {
+                 hitCallback: function() {
+                     redirectTriggered = true;
+                     document.location = url;
+                 }
+             });
+             setTimeout(function() {
+		             if (!redirectTriggered) {
+			               document.location = url;
+		             }
+	           }, 1500);
+         }
+        </script>
     </head>
     <body>
         <!--[if lte IE 8]>
@@ -57,6 +73,7 @@
                         <li class="pure-menu-item"><a href="/explore/game" class="pure-menu-link">Game</a></li>
                         <li class="pure-menu-item"><a href="/explore/food" class="pure-menu-link">Food</a></li>
                         <li class="pure-menu-item"><a href="/explore/hot" class="pure-menu-link">Hot</a></li>
+                        <li class="pure-menu-item"><a href="https://www.avoalre.net/" onclick="trackOutboundLink('https://www.avoalre.net'); return false;" target="_blank" class="pure-menu-link">Avoalre Sunglasses</a></li>
                     </ul>
                 </div>
             </div>

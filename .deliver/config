@@ -1,6 +1,6 @@
 APP="instaghub"
 
-BUILD_HOST="instaghub.com"
+BUILD_HOST="instaghub1"
 BUILD_USER="root"
 BUILD_AT="/root/$APP/app_build"
 
@@ -10,7 +10,7 @@ CLEAN_DEPLOY=true
 # prevent re-installing node modules; this defaults to "."
 GIT_CLEAN_PATHS="_build rel priv/static"
 
-PRODUCTION_HOSTS="instaghub.com" 
+PRODUCTION_HOSTS="instaghub1 instaghub2" 
 PRODUCTION_USER="root" 
 DELIVER_TO="/root/$APP/app_release"
 

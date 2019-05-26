@@ -2,6 +2,8 @@ defmodule InstaghubWeb.Router do
   use InstaghubWeb, :router
   alias InstaghubWeb.Plug.Cache
   alias InstaghubWeb.Plug.QPS
+  alias Instaghub.Utils
+  require Logger
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -16,7 +18,10 @@ defmodule InstaghubWeb.Router do
 
   def dec_qps(conn, _opts) do
     Plug.Conn.register_before_send(conn, fn conn ->
-      Instaghub.Bucket.decrease_req
+      Logger.debug "start decrease req in plug"
+      conn
+      |> Utils.check_ua_type
+      |> Instaghub.Bucket.decrease_req
       conn
     end)
   end

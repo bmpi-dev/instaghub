@@ -3,7 +3,6 @@ defmodule Instaghub.Bucket do
   require Logger
 
   @name :kv
-  @req_count :req
 
   @doc """
   Starts a new bucket.
@@ -12,25 +11,31 @@ defmodule Instaghub.Bucket do
     Agent.start_link(fn -> %{} end, name: @name)
   end
 
-  def increase_req do
-    Logger.debug "increase req"
-    req = get(@req_count)
-    put(@req_count, req + 1)
+  def increase_req(key) do
+    Logger.debug "increase #{key} req"
+    Agent.update(@name, fn map ->
+      map_list = for {^key, v} <- map, do: Map.put(map, key, v + 1)
+      map_list |> Enum.at(0)
+    end)
   end
 
-  def decrease_req do
-    Logger.debug "decrease req"
-    req = get(@req_count)
-    put(@req_count, req - 1)
+  def decrease_req(key) do
+    Logger.debug "decrease #{key} req"
+    Agent.update(@name, fn map ->
+      map_list = for {^key, v} <- map, do: Map.put(map, key, v - 1)
+      map_list |> Enum.at(0)
+    end)
   end
 
-  def reset_req do
-    put(@req_count, 0)
+  def reset_req(key) do
+    req = get(key)
+    Logger.debug "reset #{key} with 0, before is #{req}"
+    put(key, 0)
   end
 
-  def get_req do
-    req = get(@req_count)
-    Logger.debug "req is #{req}"
+  def get_req(key) do
+    req = get(key)
+    Logger.debug "req #{key} is #{req}"
     req
   end
 

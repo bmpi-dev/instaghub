@@ -17,7 +17,9 @@ defmodule Instaghub.Bucket.Schedule do
   end
 
   defp schedule_work() do
-    Instaghub.Bucket.reset_req
-    Process.send_after(self(), :work, 2 * 1000)
+    Instaghub.Bucket.reset_req(:googlebot)
+    Instaghub.Bucket.reset_req(:otherbot)
+    Instaghub.Bucket.reset_req(:human)
+    Process.send_after(self(), :work, 120 * 1000)
   end
 end

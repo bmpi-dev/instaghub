@@ -2,7 +2,7 @@ defmodule InstaghubWeb.Plug.QPS do
   require Logger
   alias Instaghub.Utils
 
-  @max_qps_googlebot 2
+  @max_qps_googlebot 1
   @max_qps_human 5
 
   def init(options) do

@@ -4,13 +4,23 @@ defmodule InstaghubWeb.PageController do
   alias Instaghub.RedisUtil
   alias InstaghubWeb.Plug.Cache
   alias InstaghubWeb.SEO
+  alias Instaghub.Utils
   require Logger
 
+  defp before_halt(conn, ua_type) do
+    Logger.debug "before halt we will decrease req #{ua_type}"
+    Instaghub.Bucket.decrease_req(ua_type)
+    conn
+  end
+
   defp handle_404(conn) do
+    ua_type = conn
+    |> Utils.check_ua_type
     conn
     |> Plug.Conn.put_status(404)
     |> Phoenix.Controller.put_view(InstaghubWeb.ErrorView)
     |> Phoenix.Controller.render("404.html", %{})
+    |> before_halt(ua_type)
     |> Plug.Conn.halt
   end
 

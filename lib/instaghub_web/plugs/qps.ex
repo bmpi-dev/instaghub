@@ -78,8 +78,8 @@ defmodule InstaghubWeb.Plug.QPS do
   end
 
   defp before_halt(conn, ua_type) do
-    Logger.debug "before halt we will decrease req #{ua_type}"
-    Instaghub.Bucket.decrease_req(ua_type)
+    #Logger.debug "before halt we will decrease req #{ua_type}"
+    #Instaghub.Bucket.decrease_req(ua_type)
     conn
   end
 

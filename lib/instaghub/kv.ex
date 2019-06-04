@@ -22,7 +22,13 @@ defmodule Instaghub.Bucket do
   def decrease_req(key) do
     Logger.debug "decrease #{key} req"
     Agent.update(@name, fn map ->
-      map_list = for {^key, v} <- map, do: Map.put(map, key, v - 1)
+      map_list = for {^key, v} <- map do
+          if v < 1 do
+            Map.put(map, key, 0)
+          else
+            Map.put(map, key, v - 1)
+          end
+        end
       map_list |> Enum.at(0)
     end)
   end

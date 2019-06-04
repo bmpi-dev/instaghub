@@ -20,6 +20,6 @@ defmodule Instaghub.Bucket.Schedule do
     Instaghub.Bucket.reset_req(:googlebot)
     Instaghub.Bucket.reset_req(:otherbot)
     Instaghub.Bucket.reset_req(:human)
-    Process.send_after(self(), :work, 120 * 1000)
+    Process.send_after(self(), :work, 10 * 1000)
   end
 end

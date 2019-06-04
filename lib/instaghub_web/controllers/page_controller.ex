@@ -8,8 +8,8 @@ defmodule InstaghubWeb.PageController do
   require Logger
 
   defp before_halt(conn, ua_type) do
-    #Logger.debug "before halt we will decrease req #{ua_type}"
-    #Instaghub.Bucket.decrease_req(ua_type)
+    Logger.debug "before halt we will decrease req #{ua_type}"
+    Instaghub.Bucket.decrease_req(ua_type)
     conn
   end
 
@@ -44,7 +44,7 @@ defmodule InstaghubWeb.PageController do
   defp human_404_ac(conn, ua_type) do
     conn
     |> Phoenix.Controller.redirect(to: "/")
-    |> before_halt(ua_type)
+    #|> before_halt(ua_type)
     |> Plug.Conn.halt
   end
 

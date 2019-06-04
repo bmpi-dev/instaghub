@@ -70,7 +70,7 @@ defmodule InstaghubWeb.Plug.QPS do
       Logger.info "beyond max human qps and we will redirect to index"
       conn
       |> Phoenix.Controller.redirect(to: "/")
-      |> before_halt(ua_type)
+      #|> before_halt(ua_type)
       |> Plug.Conn.halt
     else
       conn
@@ -78,8 +78,8 @@ defmodule InstaghubWeb.Plug.QPS do
   end
 
   defp before_halt(conn, ua_type) do
-    #Logger.debug "before halt we will decrease req #{ua_type}"
-    #Instaghub.Bucket.decrease_req(ua_type)
+    Logger.debug "before halt we will decrease req #{ua_type}"
+    Instaghub.Bucket.decrease_req(ua_type)
     conn
   end
 

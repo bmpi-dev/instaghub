@@ -15,8 +15,8 @@
         <% end %>
         <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
         <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <link id="favicon" rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC3klEQVRYR+2WTUgUYRjH/8/shomHDCrMXXc2iAxCdxa7FB2KLOsWVCexoHaWAi9WW3iIwiCkJAQpwp02KzrVqUukfUAQdonZXSJIgmb8CAXTPtFwZ54YtwXZj8ldVyxwTsPLy//5vf/n430JS/zREsfHMkCGA0OH3aVcvqbNBA4RyFuUFDE+M+GO+EU9Sw9gzNXMABiUpasMOlOUwGkizHzdq0SbbQE0WfpYjJOzge3eiNpvBfsUrNk8YzregWhKDKtlfwOYJlDJQh0wZyZLN/Ro0ykdTZZmddPXM1KQ2vjPAjBDJ+YbKxyOSGX3m3H9ZM1qJJx1YGxl4hYCrbPgHWxscyvx19a/Lvu2ABQHSFigA3zf44oeoYswszmUhHF0AdSYy8HCARgvPYq6kwAekv37TcYlJmy0AhHjg0A4XxVWHydP7L8LoCkbRKEAU87ETLXr9tshXfadA4T2bOIMDnnD0Y7RptqyXyWOARAq0/cVBJDq3+Ggb5fBwvOcBcrMINorhtWnWkAKEdGVvAHsql8PSL0g2mPfIdwrhqMN8+2ivC4jLSBNElG5nTgzRr2Kur5ggGxzwMFGlVuJD2uyNJZqs1wBmHnMq0QrGKBB2Z/RLQXVAEzeId6KvtJlqQ+getvTMZ6IirpvWPZtMiC8z7sGsk5CRruoqK267K8Hs1UH2VPHzA6Bd7u7Yy+0oK+ZWOgqCgADX1dOG66Ke/Gfg8d9LSwIVnU708QTYA6JSrRzIli36hsbA9nSVVgKkpEeecLqAWsQjRyrrU4IwikGNQBsEtDnNM1rrkh81nJd9j8EcLCYgyipxXgmOM2jVTdjI7nqQJelywC1Fn8U/1Fk5u8CqJMI/Wwg5omonyzLf7DRyKATAGrsinQhKZhva9vu+w8AAn6NCGJRjpspMi6G1bVzlzNfRAFfB5FwenEAzDYxHLtgC7A4z3KeYKIe0aWG0h8zeV1Gi+HKMsCSO/AbLqKYMI9kQ0EAAAAASUVORK5CYII=">
+        <script src="https://kit.fontawesome.com/aae5627828.js"></script>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135947508-1"></script>
         <script>

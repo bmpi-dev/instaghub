@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <%= if ins == 3 || ins == 7 || ins == 10 do %>
+            <%= if ins == 3 || ins == 7 do %>
                 <div class="grid-item ads">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <ins class="adsbygoogle"
@@ -56,6 +56,20 @@
                          data-ad-slot="5419379615"></ins>
                     <script>
                      (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            <% end %>
+            <%= if ins == 10 do %>
+                <div class="grid-item ads">
+                    <script type="text/javascript">
+	                   atOptions = {
+		                     'key' : '6a7f02aa163d0ffd4e3490c3a22eb55d',
+		                     'format' : 'iframe',
+		                     'height' : 250,
+		                     'width' : 300,
+		                     'params' : {}
+	                   };
+	                   document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.bcloudhost.com/6a7f02aa163d0ffd4e3490c3a22eb55d/invoke.js"></scr' + 'ipt>');
                     </script>
                 </div>
             <% end %>

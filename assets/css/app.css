@@ -315,3 +315,8 @@ body { font-family: sans-serif; }
     height: auto;
     overflow:hidden;
 }
+
+/* hidden infolinks IL_IN_CONTENT AD */
+input[name="IL_IN_CONTENT"]+div {
+    display: none !important;
+}

@@ -314,6 +314,8 @@ body { font-family: sans-serif; }
     max-height: 800px;
     height: auto;
     overflow:hidden;
+    display:block;
+    text-align:center;
 }
 
 /* hidden infolinks IL_IN_CONTENT AD */

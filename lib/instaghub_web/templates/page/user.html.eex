@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <%= if ins == 3 || ins == 7 do %>
+            <%= if ins == 2 || ins == 5 || ins == 8 do %>
                 <div class="grid-item ads">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <ins class="adsbygoogle"
@@ -64,7 +64,7 @@
                     </script>
                 </div>
             <% end %>
-            <%= if ins == 5 do %>
+            <%= if ins == 4 do %>
                 <div class="grid-item ads">
                     <script type="text/javascript">
 	                   atOptions = {
@@ -78,7 +78,7 @@
                     </script>
                 </div>
             <% end %>
-            <%= if ins == 10 do %>
+            <%= if ins == 7 do %>
                 <div class="grid-item ads">
                     <script type="text/javascript">
 	                   atOptions = {
@@ -89,6 +89,20 @@
 		                     'params' : {}
 	                   };
 	                   document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.bcloudhost.com/6a7f02aa163d0ffd4e3490c3a22eb55d/invoke.js"></scr' + 'ipt>');
+                    </script>
+                </div>
+            <% end %>
+            <%= if ins == 10 do %>
+                <div class="grid-item ads">
+                    <script type="text/javascript">
+	                   atOptions = {
+		                     'key' : 'c79690c112a5a54e94bba62cae76304a',
+		                     'format' : 'iframe',
+		                     'height' : 60,
+		                     'width' : 468,
+		                     'params' : {}
+	                   };
+	                   document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.bcloudhost.com/c79690c112a5a54e94bba62cae76304a/invoke.js"></scr' + 'ipt>');
                     </script>
                 </div>
             <% end %>

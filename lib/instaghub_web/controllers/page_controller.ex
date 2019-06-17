@@ -13,43 +13,65 @@ defmodule InstaghubWeb.PageController do
     conn
   end
 
-  defp handle_404(conn) do
-    ua_type = conn
-    |> Utils.check_ua_type
-    case ua_type do
-      :googlebot -> googlebot_404_ac(conn, ua_type)
-      :otherbot -> otherbot_404_ac(conn, ua_type)
-      _ -> human_404_ac(conn, ua_type)
+  defp is_4xx(res) do
+    case res do
+      429 -> true
+      404 -> true
+      nil -> true
+      _ -> false
     end
   end
 
-  defp googlebot_404_ac(conn, ua_type) do
-    conn
-    |> Plug.Conn.put_status(:too_many_requests)
-    |> Phoenix.Controller.put_view(InstaghubWeb.ErrorView)
-    |> Phoenix.Controller.render("429.html", %{})
-    |> before_halt(ua_type)
-    |> Plug.Conn.halt
+  defp handle_4xx(conn, err_type) do
+    ua_type = conn
+    |> Utils.check_ua_type
+    case ua_type do
+      :googlebot -> googlebot_4xx_ac(conn, ua_type, err_type)
+      :otherbot -> otherbot_4xx_ac(conn, ua_type, err_type)
+      _ -> human_4xx_ac(conn, ua_type, err_type)
+    end
   end
 
-  defp otherbot_404_ac(conn, ua_type) do
-    conn
-    |> Plug.Conn.put_status(:too_many_requests)
-    |> Phoenix.Controller.put_view(InstaghubWeb.ErrorView)
-    |> Phoenix.Controller.render("429.html", %{})
-    |> before_halt(ua_type)
-    |> Plug.Conn.halt
+  defp googlebot_4xx_ac(conn, ua_type, err_type) do
+    case err_type do
+      429 ->
+        handle_429(conn, ua_type)
+      _ ->
+        handle_404(conn, ua_type)
+    end
   end
 
-  defp human_404_ac(conn, ua_type) do
+  defp otherbot_4xx_ac(conn, ua_type, _err_type) do
+    handle_429(conn, ua_type)
+  end
+
+  defp human_4xx_ac(conn, ua_type, _err_type) do
     conn
     |> Phoenix.Controller.redirect(to: "/")
     #|> before_halt(ua_type)
     |> Plug.Conn.halt
   end
 
+  defp handle_429(conn, ua_type) do
+    conn
+    |> Plug.Conn.put_status(:too_many_requests)
+    |> Phoenix.Controller.put_view(InstaghubWeb.ErrorView)
+    |> Phoenix.Controller.render("429.html", %{})
+    |> before_halt(ua_type)
+    |> Plug.Conn.halt
+  end
+
+  defp handle_404(conn, ua_type) do
+    conn
+    |> Plug.Conn.put_status(404)
+    |> Phoenix.Controller.put_view(InstaghubWeb.ErrorView)
+    |> Phoenix.Controller.render("404.html", %{})
+    |> before_halt(ua_type)
+    |> Plug.Conn.halt
+  end
+
   def not_found(conn, _params) do
-    handle_404(conn)
+    handle_4xx(conn, 404)
   end
 
   def index(%Plug.Conn{request_path: path} = conn, _params) do
@@ -81,8 +103,8 @@ defmodule InstaghubWeb.PageController do
     else
       page
     end
-    if feeds_with_page == nil do
-      handle_404(conn)
+    if is_4xx(feeds_with_page) do
+      handle_4xx(conn, feeds_with_page)
     else
       if cursor == nil do
         render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info, seo: SEO.get_index_seo(path, feeds_with_page))
@@ -110,8 +132,8 @@ defmodule InstaghubWeb.PageController do
     else
       page
     end
-    if feeds_with_page == nil do
-      handle_404(conn)
+    if is_4xx(feeds_with_page) do
+      handle_4xx(conn, feeds_with_page)
     else
       render(conn, "post_comment.html", post: feeds_with_page, seo: SEO.get_post_seo(feeds_with_page))
     end
@@ -138,8 +160,8 @@ defmodule InstaghubWeb.PageController do
     else
       page
     end
-    if feeds_with_page == nil do
-      handle_404(conn)
+    if is_4xx(feeds_with_page) do
+      handle_4xx(conn, feeds_with_page)
     else
       if cursor == nil do
         render(conn, "user.html", posts: feeds_with_page.edge_owner_to_timeline_media.posts, page_info: feeds_with_page.edge_owner_to_timeline_media.page_info, user: feeds_with_page, seo: SEO.get_user_seo(feeds_with_page))
@@ -168,8 +190,8 @@ defmodule InstaghubWeb.PageController do
     else
       page
     end
-    if feeds_with_page == nil do
-      handle_404(conn)
+    if is_4xx(feeds_with_page) do
+      handle_4xx(conn, feeds_with_page)
     else
       if cursor == nil do
         render(conn, "tag.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info, tag: feeds_with_page, seo: SEO.get_tag_seo(feeds_with_page))
@@ -198,8 +220,8 @@ defmodule InstaghubWeb.PageController do
     else
       page
     end
-    if feeds_with_page == nil do
-      handle_404(conn)
+    if is_4xx(feeds_with_page) do
+      handle_4xx(conn, feeds_with_page)
     else
       tags = feeds_with_page.hashtags
       users = feeds_with_page.users

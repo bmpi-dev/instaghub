@@ -11,11 +11,18 @@ defmodule Ins.Web.API do
 
   defp log_err(err, func, msg) do
     Logger.error "error log info begin [#{DateTime.to_string(DateTime.utc_now)}] ===>"
-    err |> IO.inspect
     func |> IO.inspect
     msg |> IO.inspect
+    err |> IO.inspect
     Logger.error "error log info end ===>"
-    nil
+    case err do
+      Instaghub.Error429 ->
+        429
+      Instaghub.Error404 ->
+        404
+      Instaghub.ErrorOther ->
+        nil
+    end
   end
 
   def get_feeds(cursor \\ nil, menu \\ :sports) do
@@ -169,10 +176,12 @@ defmodule Ins.Web.API do
         case code do
           200 ->
             Poison.decode!(body, keys: :atoms)
+          429 ->
+            raise(Instaghub.Error429, [code: code, message: "#{body}"])
           _ ->
-            raise(Instaghub.Error, [code: code, message: "#{body}"])
+            raise(Instaghub.Error404, [code: code, message: "#{body}"])
         end
-      err -> log_err(err, :handle_response, res)
+      err -> raise(Instaghub.ErrorOther, [message: err])
     end
   end
 

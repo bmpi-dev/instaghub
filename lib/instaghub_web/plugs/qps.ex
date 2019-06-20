@@ -4,6 +4,7 @@ defmodule InstaghubWeb.Plug.QPS do
 
   @max_qps_googlebot 1
   @max_qps_human 5
+  @ins_google_qps System.get_env("INS_GOOGLE_QPS")
 
   def init(options) do
     # initialize options
@@ -40,8 +41,13 @@ defmodule InstaghubWeb.Plug.QPS do
   defp googlebot_action(conn, ua_type) do
     qps = Instaghub.Bucket.get_req(ua_type)
     Logger.info "req is google bot, current req count is #{qps}"
-    if qps > @max_qps_googlebot do
-      Logger.info "beyond max googlebot qps and we will halt all request"
+    google_qps = if @ins_google_qps != nil do
+      @ins_google_qps |> String.to_integer
+    else
+      @max_qps_googlebot
+    end
+    if qps > google_qps do
+      Logger.info "beyond max googlebot qps(#{google_qps}) and we will halt all request"
       conn
       |> Plug.Conn.put_status(:too_many_requests)
       |> Phoenix.Controller.put_view(InstaghubWeb.ErrorView)

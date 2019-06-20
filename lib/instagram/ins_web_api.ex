@@ -1,5 +1,6 @@
 defmodule Ins.Web.API do
   require Logger
+  alias Instaghub.RedisUtil
 
   @base_url "https://www.instagram.com"
   @graphql_url_part "/graphql/query/"
@@ -8,6 +9,10 @@ defmodule Ins.Web.API do
   @user_hash "f2405b236d85e8296cf30347c9f08c2a"
   @tag_hash "f92f56d47dc7a55b606908374b43a314"
   @post_hash "477b65a610463740ccdb83135b2014db"
+
+  @ins_not_login System.get_env("INS_NOT_LOGIN")
+  @csrf "csrf"
+  @rhx_gis "rhx_gis"
 
   defp log_err(err, func, msg) do
     Logger.error "error log info begin [#{DateTime.to_string(DateTime.utc_now)}] ===>"
@@ -18,14 +23,31 @@ defmodule Ins.Web.API do
     case err do
       Instaghub.Error429 ->
         429
-      Instaghub.Error404 ->
+      _ ->
         404
-      Instaghub.ErrorOther ->
-        nil
     end
   end
 
   def get_feeds(cursor \\ nil, menu \\ :sports) do
+    if @ins_not_login == "1" do
+      get_not_login_feeds(cursor, menu)
+    else
+      get_login_feeds(cursor, menu)
+    end
+  end
+
+  defp get_not_login_feeds(cursor, menu) do
+    case menu do
+      :sports -> get_tag_posts("sports", cursor)
+      :women -> get_tag_posts("women", cursor)
+      :animal -> get_tag_posts("animal", cursor)
+      :game -> get_tag_posts("game", cursor)
+      :food -> get_tag_posts("food", cursor)
+      :hot -> get_tag_posts("love", cursor)
+    end
+  end
+
+  defp get_login_feeds(cursor, menu) do
     variables = %{cached_feed_item_ids: [],
                   fetch_media_item_count: 12,
                   fetch_comment_count: 4,
@@ -36,7 +58,7 @@ defmodule Ins.Web.API do
     variables =
     if cursor != nil do
       Map.put(variables, :fetch_media_item_cursor, cursor)
-    else
+
       variables
     end
     params = [["query_hash", @feed_hash], ["variables", Poison.encode!(variables)], ["menu", menu]]
@@ -136,13 +158,57 @@ defmodule Ins.Web.API do
   end
 
   defp get(url_part, params) do
-    session = get_session(params)
-    Logger.info "session: #{session}"
-    headers = ["Cookie": "sessionid=#{session}"]
+    headers = generate_header(params)
+    Logger.debug "#{inspect headers}"
     [url_part, params]
     |> build_url
     |> HTTPoison.get!(headers)
     |> handle_response
+  end
+
+  defp generate_header(params) do
+    if @ins_not_login == "1" do
+      get_not_login_header(params)
+    else
+      get_login_header(params)
+    end
+  end
+
+  defp get_not_login_header(params) do
+    v = params |> Enum.at(1)
+    variables = if v != nil do
+			["variables", var] = v
+			var
+		else
+			nil
+		end
+    csrf = RedisUtil.get(@csrf)
+    rhx_gis = RedisUtil.get(@rhx_gis)
+    gis_token = if rhx_gis != nil && variables != nil do
+			rhx_gis <> ":" <> variables |> (fn x -> :crypto.hash(:md5, x) end).() |> Base.encode16 |> String.downcase
+		else
+			nil
+		end
+    user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
+    headers = [referer: "https://www.instagram.com/",
+			         "user-agent": user_agent]
+    headers = if gis_token != nil do
+      headers ++ ["x-instagram-gis": gis_token]
+    else
+      headers
+    end
+    headers = if csrf != nil do
+      headers ++ ["x-csrftoken": csrf]
+    else
+      headers
+    end
+    headers
+  end
+
+  defp get_login_header(params) do
+    session = get_session(params)
+    Logger.info "session: #{session}"
+    ["Cookie": "sessionid=#{session}"]
   end
 
   defp get_session(params) do

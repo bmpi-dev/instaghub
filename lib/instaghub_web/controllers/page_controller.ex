@@ -7,6 +7,8 @@ defmodule InstaghubWeb.PageController do
   alias Instaghub.Utils
   require Logger
 
+  @ins_not_login System.get_env("INS_NOT_LOGIN")
+
   defp before_halt(conn, ua_type) do
     Logger.debug "before halt we will decrease req #{ua_type}"
     Instaghub.Bucket.decrease_req(ua_type)
@@ -45,7 +47,7 @@ defmodule InstaghubWeb.PageController do
     handle_429(conn, ua_type)
   end
 
-  defp human_4xx_ac(conn, ua_type, _err_type) do
+  defp human_4xx_ac(conn, _ua_type, _err_type) do
     conn
     |> Phoenix.Controller.redirect(to: "/")
     #|> before_halt(ua_type)
@@ -64,6 +66,7 @@ defmodule InstaghubWeb.PageController do
   defp handle_404(conn, ua_type) do
     conn
     |> Plug.Conn.put_status(404)
+
     |> Phoenix.Controller.put_view(InstaghubWeb.ErrorView)
     |> Phoenix.Controller.render("404.html", %{})
     |> before_halt(ua_type)
@@ -106,14 +109,22 @@ defmodule InstaghubWeb.PageController do
     if is_4xx(feeds_with_page) do
       handle_4xx(conn, feeds_with_page)
     else
-      if cursor == nil do
-        render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info, seo: SEO.get_index_seo(path, feeds_with_page))
+      if @ins_not_login == "1" do
+        get_tag(conn, feeds_with_page, cursor)
       else
-        conn
-        |> put_layout(false)
-        |> put_view(InstaghubWeb.HtmlView)
-        |> render("posts.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
+        get_index(conn, path, feeds_with_page, cursor)
       end
+    end
+  end
+
+  defp get_index(conn, path, feeds_with_page, cursor) do
+    if cursor == nil do
+      render(conn, "index.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info, seo: SEO.get_index_seo(path, feeds_with_page))
+    else
+      conn
+      |> put_layout(false)
+      |> put_view(InstaghubWeb.HtmlView)
+      |> render("posts.html", posts: feeds_with_page.posts, page_info: feeds_with_page.page_info)
     end
   end
 
@@ -193,14 +204,18 @@ defmodule InstaghubWeb.PageController do
     if is_4xx(feeds_with_page) do
       handle_4xx(conn, feeds_with_page)
     else
-      if cursor == nil do
-        render(conn, "tag.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info, tag: feeds_with_page, seo: SEO.get_tag_seo(feeds_with_page))
-      else
-        conn
-        |> put_layout(false)
-        |> put_view(InstaghubWeb.HtmlView)
-        |> render("posts.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info)
-      end
+      get_tag(conn, feeds_with_page, cursor)
+    end
+  end
+
+  defp get_tag(conn, feeds_with_page, cursor) do
+    if cursor == nil do
+      render(conn, "tag.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info, tag: feeds_with_page, seo: SEO.get_tag_seo(feeds_with_page))
+    else
+      conn
+      |> put_layout(false)
+      |> put_view(InstaghubWeb.HtmlView)
+      |> render("posts.html", posts: feeds_with_page.edge_hashtag_to_media.posts, page_info: feeds_with_page.edge_hashtag_to_media.page_info)
     end
   end
 

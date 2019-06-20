@@ -34,7 +34,8 @@ defmodule Instaghub.Application do
       Instaghub.Bucket,
       Instaghub.Bucket.Schedule,
       :poolboy.child_spec(:ins_api_pool, poolboy_config_ins()),
-      :poolboy.child_spec(:redis_pool, poolboy_config_redis())
+      :poolboy.child_spec(:redis_pool, poolboy_config_redis()),
+      Instaghub.INS.Schedule
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

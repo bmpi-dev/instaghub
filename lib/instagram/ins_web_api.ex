@@ -10,7 +10,6 @@ defmodule Ins.Web.API do
   @tag_hash "f92f56d47dc7a55b606908374b43a314"
   @post_hash "477b65a610463740ccdb83135b2014db"
 
-  @ins_not_login System.get_env("INS_NOT_LOGIN")
   @csrf "csrf"
   @rhx_gis "rhx_gis"
 
@@ -29,7 +28,7 @@ defmodule Ins.Web.API do
   end
 
   def get_feeds(cursor \\ nil, menu \\ :sports) do
-    if @ins_not_login == "1" do
+    if System.get_env("INS_NOT_LOGIN") == "1" do
       get_not_login_feeds(cursor, menu)
     else
       get_login_feeds(cursor, menu)
@@ -167,7 +166,7 @@ defmodule Ins.Web.API do
   end
 
   defp generate_header(params) do
-    if @ins_not_login == "1" do
+    if System.get_env("INS_NOT_LOGIN") == "1" do
       get_not_login_header(params)
     else
       get_login_header(params)

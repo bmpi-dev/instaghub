@@ -7,8 +7,6 @@ defmodule InstaghubWeb.PageController do
   alias Instaghub.Utils
   require Logger
 
-  @ins_not_login System.get_env("INS_NOT_LOGIN")
-
   defp before_halt(conn, ua_type) do
     Logger.debug "before halt we will decrease req #{ua_type}"
     Instaghub.Bucket.decrease_req(ua_type)
@@ -109,7 +107,7 @@ defmodule InstaghubWeb.PageController do
     if is_4xx(feeds_with_page) do
       handle_4xx(conn, feeds_with_page)
     else
-      if @ins_not_login == "1" do
+      if System.get_env("INS_NOT_LOGIN") == "1" do
         get_tag(conn, feeds_with_page, cursor)
       else
         get_index(conn, path, feeds_with_page, cursor)

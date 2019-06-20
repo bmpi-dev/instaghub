@@ -86,7 +86,7 @@ defmodule InstaghubWeb.SEO do
 
   def get_post_seo(page) do
     try do
-      title = page.owner.username <> "'s instagram photos and videos - Instaghub.com"
+      title = page.edge_media_to_caption <> " by " page.owner.username <> " - Instaghub.com"
       description = page.edge_media_to_caption
       keywords = page.owner.username
       %{title: title, description: description, keywords: keywords}

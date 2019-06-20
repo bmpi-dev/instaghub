@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <%= if ins == 2 || ins == 5 || ins == 8 do %>
+            <%= if ins == 0 || ins == 2 do %>
                 <div class="grid-item ads">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <ins class="adsbygoogle"
@@ -65,7 +65,7 @@
                 </div>
             <% end %>
             <%= if ins == 4 do %>
-                <div class="grid-item ads">
+                <div class="grid-item ads" style="min-height:310px;">
                     <script type="text/javascript">
 	                   atOptions = {
 		                     'key' : '0e6689fa28d8d674edc46289aa31e294',

@@ -238,9 +238,15 @@ defmodule Ins.Web.API do
   end
 
   defp get_random_session() do
-    ["INS_SESSION_ID_SPORTS", "INS_SESSION_ID_WOMEN", "INS_SESSION_ID_ANIMAL", "INS_SESSION_ID_GAME", "INS_SESSION_ID_FOOD", "INS_SESSION_ID_HOT"]
+    s = ["INS_SESSION_ID_SPORTS", "INS_SESSION_ID_WOMEN", "INS_SESSION_ID_ANIMAL", "INS_SESSION_ID_GAME", "INS_SESSION_ID_FOOD", "INS_SESSION_ID_HOT"]
     |> Enum.random
     |> System.get_env
+    if System.get_env("INS_SESSION_ID_OTHER") != nil do
+      o = System.get_env("INS_SESSION_ID_OTHER") |> String.split(",")
+      [s,s,s,s,s,s] ++ o |> Enum.random
+    else
+      s
+    end
   end
 
   defp handle_response(res) do

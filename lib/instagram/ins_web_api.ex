@@ -19,12 +19,20 @@ defmodule Ins.Web.API do
     msg |> IO.inspect
     err |> IO.inspect
     Logger.error "error log info end ===>"
-    case err do
-      Instaghub.Error429 ->
+    case is_error429?(err) do
+      true ->
         429
-      _ ->
+      false ->
         404
     end
+  end
+
+  defp is_error429?(%Instaghub.Error429{}) do
+    true
+  end
+
+  defp is_error429?(_) do
+    false
   end
 
   def get_feeds(cursor \\ nil, menu \\ :sports) do

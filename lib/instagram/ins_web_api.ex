@@ -191,7 +191,7 @@ defmodule Ins.Web.API do
   defp get_random_proxy() do
     proxys = System.get_env("PROXYS")
     if proxys != nil do
-      proxys |> String.split(",") |> Enum.random
+      proxys |> String.split(",") |> (fn(s) -> s ++ [nil] end).() |> Enum.random
     else
       nil
     end

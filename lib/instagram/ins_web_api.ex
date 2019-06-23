@@ -166,11 +166,35 @@ defmodule Ins.Web.API do
 
   defp get(url_part, params) do
     headers = generate_header(params)
+    proxy_option = get_random_proxy()
+    proxy = if proxy_option != nil do
+      Logger.debug "use proxy #{proxy_option}"
+      [{:proxy, proxy_option}]
+    else
+      nil
+    end
     Logger.debug "#{inspect headers}"
     [url_part, params]
     |> build_url
-    |> HTTPoison.get!(headers)
+    |> (fn(s) ->
+      if proxy != nil do
+        Logger.debug "get with proxy"
+        HTTPoison.get!(s, headers, proxy)
+      else
+        Logger.debug "get without proxy"
+        HTTPoison.get!(s, headers)
+      end
+    end).()
     |> handle_response
+  end
+
+  defp get_random_proxy() do
+    proxys = System.get_env("PROXYS")
+    if proxys != nil do
+      proxys |> String.split(",") |> Enum.random
+    else
+      nil
+    end
   end
 
   defp generate_header(params) do

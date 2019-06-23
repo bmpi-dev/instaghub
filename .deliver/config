@@ -10,7 +10,7 @@ CLEAN_DEPLOY=true
 # prevent re-installing node modules; this defaults to "."
 GIT_CLEAN_PATHS="_build rel priv/static"
 
-PRODUCTION_HOSTS="instaghub1 instaghub2 instaghub3 instaghub4" 
+PRODUCTION_HOSTS="instaghub1 instaghub2 instaghub3" 
 PRODUCTION_USER="root" 
 DELIVER_TO="/root/$APP/app_release"
 

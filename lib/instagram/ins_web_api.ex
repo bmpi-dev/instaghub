@@ -168,7 +168,7 @@ defmodule Ins.Web.API do
     headers = generate_header(params)
     proxy_option = get_random_proxy()
     proxy = if proxy_option != nil do
-      Logger.debug "use proxy #{proxy_option}"
+      Logger.info "use proxy #{proxy_option}"
       [{:proxy, proxy_option}]
     else
       nil

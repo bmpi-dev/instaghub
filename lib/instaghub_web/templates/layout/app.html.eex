@@ -163,8 +163,10 @@
              window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
          })(this, this.document);
         </script>
-        <script>
-         (function(d){let s=d.createElement('script');s.async=true;s.src='https://olineman.pro/code/pops.js?h=waWQiOjEwMDcxNzAsInNpZCI6MTAxMTMwMiwid2lkIjoxODIyMCwic3JjIjoyfQ==eyJ';d.head.appendChild(s);})(document);
+        <script type="text/javascript">
+         var infolinks_pid = 3183273;
+         var infolinks_wsid = 0;
         </script>
+        <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
     </body>
 </html>

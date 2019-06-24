@@ -169,7 +169,8 @@ defmodule Ins.Web.API do
     proxy_option = get_random_proxy()
     proxy = if proxy_option != nil do
       Logger.info "use proxy #{proxy_option}"
-      [{:proxy, proxy_option}]
+      # disable hackney connect pool for using rotate proxy IP
+      [{:proxy, proxy_option}, hackney: [pool: false]]
     else
       nil
     end

@@ -65,7 +65,7 @@ defmodule Ins.Web.API do
     variables =
     if cursor != nil do
       Map.put(variables, :fetch_media_item_cursor, cursor)
-
+    else
       variables
     end
     params = [["query_hash", @feed_hash], ["variables", Poison.encode!(variables)], ["menu", menu]]

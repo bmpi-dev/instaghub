@@ -37,7 +37,7 @@ defmodule InstaghubWeb.PageController do
       429 ->
         handle_429(conn, ua_type)
       _ ->
-        handle_404(conn, ua_type)
+        handle_429(conn, ua_type)
     end
   end
 

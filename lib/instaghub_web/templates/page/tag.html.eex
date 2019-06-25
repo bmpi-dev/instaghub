@@ -87,20 +87,6 @@
                     </script>
                 </div>
             <% end %>
-            <%= if ins == 10 do %>
-                <div class="grid-item ads" style="line-height:250px;">
-                    <script type="text/javascript">
-	                   atOptions = {
-		                     'key' : 'c79690c112a5a54e94bba62cae76304a',
-		                     'format' : 'iframe',
-		                     'height' : 60,
-		                     'width' : 468,
-		                     'params' : {}
-	                   };
-	                   document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.bcloudhost.com/c79690c112a5a54e94bba62cae76304a/invoke.js"></scr' + 'ipt>');
-                    </script>
-                </div>
-            <% end %>
         <% end %>
     <% end %>
 </div>

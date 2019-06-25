@@ -105,19 +105,6 @@
             </div>
         </div>
 
-        <div style="display:block;text-align:center;max-height:100px;overflow:hidden;">
-            <script type="text/javascript">
-	           atOptions = {
-		             'key' : 'ac07094fb7ff47f4e42438621ea33d27',
-		             'format' : 'iframe',
-		             'height' : 90,
-		             'width' : 728,
-		             'params' : {}
-	           };
-	           document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.bcloudhost.com/ac07094fb7ff47f4e42438621ea33d27/invoke.js"></scr' + 'ipt>');
-            </script> 
-        </div>
-
         <main role="main" class="container">
             <%= render @view_module, @view_template, assigns %>
         </main>
@@ -163,10 +150,5 @@
              window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
          })(this, this.document);
         </script>
-        <script type="text/javascript">
-         var infolinks_pid = 3183273;
-         var infolinks_wsid = 0;
-        </script>
-        <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
     </body>
 </html>

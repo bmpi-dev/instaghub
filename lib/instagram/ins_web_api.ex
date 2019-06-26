@@ -1,6 +1,7 @@
 defmodule Ins.Web.API do
   require Logger
   alias Instaghub.RedisUtil
+  alias Instaghub.Proxy
 
   @base_url "https://www.instagram.com"
   @graphql_url_part "/graphql/query/"
@@ -166,7 +167,7 @@ defmodule Ins.Web.API do
 
   defp get(url_part, params) do
     headers = generate_header(params)
-    proxy_option = get_random_proxy()
+    proxy_option = get_loop_proxy()
     proxy = if proxy_option != nil do
       Logger.info "use proxy #{proxy_option}"
       # disable hackney connect pool for using rotate proxy IP
@@ -187,6 +188,10 @@ defmodule Ins.Web.API do
       end
     end).()
     |> handle_response
+  end
+
+  defp get_loop_proxy() do
+    Proxy.get()
   end
 
   defp get_random_proxy() do

@@ -35,7 +35,7 @@ defmodule Instaghub.Bucket do
 
   def reset_req(key) do
     req = get(key)
-    Logger.debug "reset #{key} with 0, before is #{req}"
+    # Logger.debug "reset #{key} with 0, before is #{req}"
     put(key, 0)
   end
 

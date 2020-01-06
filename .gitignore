@@ -43,3 +43,5 @@ npm-debug.log
 
 .env
 .deliver/releases/
+
+.elixir_ls/

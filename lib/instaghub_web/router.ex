@@ -11,9 +11,21 @@ defmodule InstaghubWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :redirect_to_index
     plug Cache, []
-    plug QPS
-    plug :dec_qps
+    # plug QPS
+    # plug :dec_qps
+  end
+
+  def redirect_to_index(%Plug.Conn{request_path: "/" <> path} = conn, _opts) when path != "" do
+    conn
+    |> Plug.Conn.put_status(:moved_permanently)
+    |> Phoenix.Controller.redirect(to: "/")
+    |> Plug.Conn.halt
+  end
+
+  def redirect_to_index(%Plug.Conn{request_path: "/"} = conn, _opts) do
+    conn
   end
 
   def dec_qps(conn, _opts) do

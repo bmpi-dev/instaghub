@@ -1,5 +1,7 @@
 # Instaghub
 
+![](https://img.bmpi.dev/5494437c-08e0-0d08-5f91-6bdb4fcdece6.png)
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`

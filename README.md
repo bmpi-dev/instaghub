@@ -39,3 +39,13 @@ mix edeliver show migrations on production # shows pending database migrations
 mix edeliver migrate production # run database migrations
 
 mix edeliver restart production # or start or stop
+
+---
+
+## About the Author
+
+This project is maintained by the creator of **MyInvestPilot** —
+a systematic investment assistance platform focused on
+rule-based, long-term investing and transparent strategy research.
+
+🔗 https://www.myinvestpilot.com
